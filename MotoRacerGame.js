@@ -304,7 +304,6 @@ MotoRacer.Game.prototype = {
 		for (var i = 0; i < this.coinsArray.length; i++)
 			{
 			var itemCoin = game.add.sprite(this.coinsArray[i][0], this.coinsArray[i][1], "coin");
-			itemCoin.enableBody = true;
 			this.coins.addChild(itemCoin);
 			}
 
