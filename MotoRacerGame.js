@@ -26,9 +26,7 @@ if (userLanguage.substring(0,2)=="es")
 	}
 
 
-var line1;
 var line1Graphic = null;
-var line2;
 var line2Graphic = null;
 
 var MotoRacer = {showDebug: false};
@@ -99,6 +97,9 @@ MotoRacer.Game = function(game)
 	this.driveJoints = [];
 	this.wheelBodies = [];
 	this.wheelSprites = [];
+	this.wheelSpritesLines = [];
+	this.wheelSpritesGraphic1 = null;
+	this.wheelSpritesGraphic2 = null;
 	this.motoSprite = null;
 	this.backgroundEndless = null;
 
@@ -129,6 +130,9 @@ MotoRacer.Game.prototype = {
 		this.driveJoints = [];
 		this.wheelBodies = [];
 		this.wheelSprites = [];
+		this.wheelSpritesLines = [];
+		this.wheelSpritesGraphic1 = null;
+		this.wheelSpritesGraphic2 = null;
 		this.motoSprite = null;
 		this.backgroundEndless = null;
 
@@ -219,8 +223,11 @@ MotoRacer.Game.prototype = {
 		// MAKING THE CAMERA TO FOLLOW THE MOTO BODY
 		game.camera.follow(this.motoBody);
 
-		line1 = new Phaser.Line(this.wheelSprites[0].x, this.wheelSprites[0].y, this.motoSprite.x, this.motoSprite.y);
-		line2 = new Phaser.Line(this.wheelSprites[1].x, this.wheelSprites[1].y, this.motoSprite.x, this.motoSprite.y);
+		// ADDING THE LINE 1 TO CONNECT THE MOTO WITH THE WHEEL 1
+		this.wheelSpritesLines[0] = new Phaser.Line(this.wheelSprites[0].x, this.wheelSprites[0].y, this.motoSprite.x, this.motoSprite.y);
+
+		// ADDING THE LINE 2 TO CONNECT THE MOTO WITH THE WHEEL 2
+		this.wheelSpritesLines[1] = new Phaser.Line(this.wheelSprites[1].x, this.wheelSprites[1].y, this.motoSprite.x, this.motoSprite.y);
 
 		// CHECKING IF THE ABOUT TOAST MUST BE DISPLAYED
 		if (this.toast==true)
@@ -265,28 +272,39 @@ MotoRacer.Game.prototype = {
 		this.motoSprite.x += this.motoSprite.width / 2;
 		this.motoSprite.y += this.motoSprite.height / 2
 
-		// 
-		line1.fromSprite(this.wheelSprites[0], this.motoSprite, false);
-		if (line1Graphic!=null)
-			{
-			line1Graphic.destroy();
-			}
-		line1Graphic = game.add.graphics(0,0);
-		line1Graphic.lineStyle(2, 0x000000, 1);
-		line1Graphic.moveTo(line1.start.x,line1.start.y);
-		line1Graphic.lineTo(line1.end.x,line1.end.y);
-		line1Graphic.endFill();
+		// DRAWING AN INVISIBLE LINE BETWEEN THE WHEEL 1 AND THE MOTO SPRITE
+		this.wheelSpritesLines[0].fromSprite(this.wheelSprites[0], this.motoSprite, false);
 
-		line2.fromSprite(this.wheelSprites[1], this.motoSprite, false);
-		if (line2Graphic!=null)
+		// CHECKING IF THERE IS A PREVIOUS LINE DRAWN BETWEEN THE WHEEL 1 AND THE MOTO SPRITE
+		if (this.wheelSpritesGraphic1!=null)
 			{
-			line2Graphic.destroy();
+			// DESTROYING ANY PREVIOUS LINE DRAWN BETWEEN THE WHEEL 1 AND THE MOTO SPRITE
+			this.wheelSpritesGraphic1.destroy();
 			}
-		line2Graphic = game.add.graphics(0,0);
-		line2Graphic.lineStyle(2, 0x000000, 1);
-		line2Graphic.moveTo(line2.start.x,line2.start.y);
-		line2Graphic.lineTo(line2.end.x,line2.end.y);
-		line2Graphic.endFill();
+
+		// DRAWING A LINE BETWEEN THE WHEEL 1 AND THE MOTO SPRITE
+		this.wheelSpritesGraphic1 = game.add.graphics(0,0);
+		this.wheelSpritesGraphic1.lineStyle(2, 0x000000, 1);
+		this.wheelSpritesGraphic1.moveTo(this.wheelSpritesLines[0].start.x,this.wheelSpritesLines[0].start.y);
+		this.wheelSpritesGraphic1.lineTo(this.wheelSpritesLines[0].end.x,this.wheelSpritesLines[0].end.y);
+		this.wheelSpritesGraphic1.endFill();
+
+		// DRAWING AN INVISIBLE LINE BETWEEN THE WHEEL 1 AND THE MOTO SPRITE
+		this.wheelSpritesLines[1].fromSprite(this.wheelSprites[1], this.motoSprite, false);
+
+		// CHECKING IF THERE IS A PREVIOUS LINE DRAWN BETWEEN THE WHEEL 2 AND THE MOTO SPRITE
+		if (this.wheelSpritesGraphic2!=null)
+			{
+			// DESTROYING ANY PREVIOUS LINE DRAWN BETWEEN THE WHEEL 2 AND THE MOTO SPRITE
+			this.wheelSpritesGraphic2.destroy();
+			}
+
+		// DRAWING A LINE BETWEEN THE WHEEL 2 AND THE MOTO SPRITE
+		this.wheelSpritesGraphic2 = game.add.graphics(0,0);
+		this.wheelSpritesGraphic2.lineStyle(2, 0x000000, 1);
+		this.wheelSpritesGraphic2.moveTo(this.wheelSpritesLines[1].start.x,this.wheelSpritesLines[1].start.y);
+		this.wheelSpritesGraphic2.lineTo(this.wheelSpritesLines[1].end.x,this.wheelSpritesLines[1].end.y);
+		this.wheelSpritesGraphic2.endFill();
 
 		// ANIMATING ENDLESS BACKGROUND
 		this.backgroundEndless.tilePosition.x = this.backgroundEndless.tilePosition.x - 0.5;
