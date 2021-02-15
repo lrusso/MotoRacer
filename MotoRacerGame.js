@@ -576,7 +576,7 @@ MotoRacer.Game.prototype = {
 		{
 		try
 			{
-			var name = "highscoreMotoRacer";
+			var name = "highscoremotoracer";
 			var nameEQ = name + "=";
 			var ca = document.cookie.split(";");
 
@@ -601,7 +601,7 @@ MotoRacer.Game.prototype = {
 		{
 		try
 			{
-			var name = "highscoreMotoRacer";
+			var name = "highscoremotoracer";
 			var value = newHighscore;
 			var days = 999;
 			var expires = "";
