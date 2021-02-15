@@ -114,12 +114,6 @@ MotoRacer.Game.prototype = {
 
 	init: function()
 		{
-		this.toast = true;
-		this.toastText = null;
-		this.toastShadow = null;
-		this.toastTimeDelay = null;
-		this.toastTimeStamp = null;
-
 		this.truckBody = null;
 		this.driveJoints = [];
 		this.wheelBodies = [];
