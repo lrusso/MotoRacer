@@ -161,6 +161,23 @@ MotoRacer.Game.prototype = {
 		// ADDING THE DOG WALK RIGHT ANIMATION AND SETTING ALL THE REQUIRED FRAMES FROM THE DOG SPRITESHEET
 		var algo = game.motoSprite.animations.add("movement", [0, 1, 2, 3]);
 		algo.play(10,true);
+
+		// ADDING THE TOAST CONTAINER
+		this.toastContainer = game.add.sprite(400, 380, "");
+		this.toastContainer.fixedToCamera = true;
+
+		// CHECKING IF THE ABOUT TOAST MUST BE DISPLAYED
+		if (this.toast==true)
+			{
+			// SETTING THE TIMESTAMP FOR THE ABOUT TOAST
+			this.toastTimeStamp = this.getCurrentTime();
+
+			// ADDING THE ABOUT TOAST
+			this.showCustomToast(STRING_ABOUT);
+
+			// SETTING THAT THE ABOUT TOAST MUST NOT BE DISPLAYED AGAIN
+			this.toast = false;
+			}
 		},
 
 	update: function()
@@ -191,12 +208,56 @@ MotoRacer.Game.prototype = {
 		game.motoSprite.position.x = truckBody.x - 50;
 		game.motoSprite.position.y = truckBody.y - 55;
 		game.motoSprite.rotation = truckBody.rotation
+
+		// CHECKING IF THERE IS A TIMESTAMP FOR THE ABOUT TOAST
+		if (this.toastTimeStamp!=null)
+			{
+			// CHECKING IF THE REQUIRED AMOUNT OF SECOND PASSED FOR HIDING THE ABOUT TOAST
+			if (this.getCurrentTime()>this.toastTimeStamp+this.toastTimeDelay)
+				{
+				// FADING OUT THE TOAST SHADOW AND TEXT
+				game.add.tween(this.toastShadow).to({alpha: 0}, 500, Phaser.Easing.Linear.None, true);
+				game.add.tween(this.toastText).to({alpha: 0}, 500, Phaser.Easing.Linear.None, true);
+
+				// CLEARING THE TIMESTAMP FOR THE ABOUT TOAST
+				this.toastTimeStamp = null;
+				}
+			}
 		},
 
 	render: function()
 		{
 		game.debug.box2dWorld();
 		},
+
+	getCurrentTime: function()
+		{
+		return window.performance && window.performance.now && window.performance.timing && window.performance.timing.navigationStart ? window.performance.now() + window.performance.timing.navigationStart : Date.now();
+		},
+
+	showCustomToast: function(myText)
+		{
+		// CREATING THE TOAST SHADOW
+		this.toastShadow = game.add.graphics();
+		this.toastShadow.beginFill(0x000000, 0.4);
+
+		// CREATING THE TOAST TEXT
+		this.toastText = game.add.text(0, 0, myText, { font: "bold 20px Arial", fill: "#fff", boundsAlignH: "center", boundsAlignV: "middle" });
+		this.toastText.setShadow(3, 3, "rgba(0,0,0,0.5)", 2);
+		this.toastText.setTextBounds(0, 0, 0, 41);
+
+		// DRAWING THE TOAST SHADOW
+		this.toastShadow.drawRoundedRect(500 / 2 - this.toastText._width / 2 - 11- 250, -5, this.toastText._width + 23, 46, 10);
+
+		// ADDING THE TOAST SHADOW TO THE TOAST CONTAINER
+		this.toastContainer.addChild(this.toastShadow);
+
+		// ADDING THE TOAST TEXT TO THE TOAST CONTAINER
+		this.toastContainer.addChild(this.toastText);
+
+		// SETTING THE DELAY FOR THE ABOUT TOAST
+		this.toastTimeDelay = 3000;
+		}
 	};
 
 // CREATING THE GAME INSTANCE
