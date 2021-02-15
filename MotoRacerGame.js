@@ -228,8 +228,12 @@ MotoRacer.Game.prototype = {
 		game.motoWheel2.y += game.motoWheel2.height / 2
 
 		game.motoSprite.position.x = truckBody.x - 47;
-		game.motoSprite.position.y = truckBody.y - 45;
-		//game.motoSprite.rotation = truckBody.rotation
+		game.motoSprite.position.y = truckBody.y - 47;
+		game.motoSprite.rotation = truckBody.rotation;
+		game.motoSprite.pivot.x = game.motoSprite.width / 2;
+		game.motoSprite.pivot.y = game.motoSprite.height / 2;
+		game.motoSprite.x += game.motoSprite.width / 2;
+		game.motoSprite.y += game.motoSprite.height / 2
 
 		var motorSpeed = 50; // rad/s
 		var motorEnabled = true;
