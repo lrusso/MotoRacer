@@ -213,9 +213,19 @@ MotoRacer.Game.prototype = {
 		{
 		game.motoWheel1.position.x = this.wheelBodies[0].x - 13;
 		game.motoWheel1.position.y = this.wheelBodies[0].y - 13;
+		game.motoWheel1.rotation = this.wheelBodies[0].rotation;
+		game.motoWheel1.pivot.x = game.motoWheel1.width / 2;
+		game.motoWheel1.pivot.y = game.motoWheel1.height / 2;
+		game.motoWheel1.x += game.motoWheel1.width / 2;
+		game.motoWheel1.y += game.motoWheel1.height / 2
 
 		game.motoWheel2.position.x = this.wheelBodies[1].x - 13;
 		game.motoWheel2.position.y = this.wheelBodies[1].y - 13;
+		game.motoWheel2.rotation = this.wheelBodies[1].rotation;
+		game.motoWheel2.pivot.x = game.motoWheel2.width / 2;
+		game.motoWheel2.pivot.y = game.motoWheel2.height / 2;
+		game.motoWheel2.x += game.motoWheel2.width / 2;
+		game.motoWheel2.y += game.motoWheel2.height / 2
 
 		game.motoSprite.position.x = truckBody.x - 47;
 		game.motoSprite.position.y = truckBody.y - 45;
