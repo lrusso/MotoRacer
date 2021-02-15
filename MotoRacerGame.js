@@ -14,15 +14,18 @@ function isMobileDevice(){return!!(navigator.userAgent.match(/Android/i)||naviga
 var userLanguage = window.navigator.userLanguage || window.navigator.language;
 
 var STRING_ABOUT = "";
+var STRING_GAMEOVER = "";
 
 // CHECKING THE USER LANGUAGE
 if (userLanguage.substring(0,2)=="es")
 	{
 	STRING_ABOUT = "Dise" + String.fromCharCode(241) + "ado por www.lrusso.com";
+	STRING_GAMEOVER = "Juego perdido";
 	}
 	else
 	{
 	STRING_ABOUT = "Designed by www.lrusso.com";
+	STRING_GAMEOVER = "Game Over";
 	}
 
 var MotoRacer = {showDebug: false};
@@ -82,6 +85,8 @@ MotoRacer.Game = function(game)
 	this.toastTimeDelay = null;
 	this.toastTimeStamp = null;
 	this.toastContainer = null;
+
+	this.gameOver = false;
 
 	this.PTM = 50;
 	this.frequency = 3.5;
@@ -228,6 +233,16 @@ MotoRacer.Game.prototype = {
 		// ADDING THE LINE 2 TO CONNECT THE MOTO WITH THE WHEEL 2
 		this.wheelSpritesLines[1] = new Phaser.Line(this.wheelSprites[1].x, this.wheelSprites[1].y, this.motoSprite.x, this.motoSprite.y);
 
+		// SETTING THE CALLBACK WHEN THE MOTO SPRITE HITS THE GROUND
+		this.motoBody.setFixtureContactCallback(this.groundBody, function (a,b,c,d,e)
+			{
+			// SETTING THAT THE GAME OVER TOAST MUST BE DISPLAYED
+			this.gameOver = true;
+
+			// RESTARTING THE GAME
+			this.restartGame();
+			},this);
+
 		// CHECKING IF IT IS A MOBILE DEVICE
 		if (this.isMobileDevice==true)
 			{
@@ -255,6 +270,19 @@ MotoRacer.Game.prototype = {
 			this.buttonB.sprite.events.onInputDown.add(function(){this.cursors.right.isDown=true;},this);
 			this.buttonB.sprite.events.onInputUp.add(function(){this.cursors.right.isDown=false;},this);
 			this.buttonsContainer.addChild(this.buttonB.sprite)
+			}
+
+		// CHECKING IF THE GAME OVER TOAST MUST BE DISPLAYED
+		if (this.gameOver==true)
+			{
+			// SETTING THE TIMESTAMP FOR THE GAME OVER TOAST
+			this.toastTimeStamp = this.getCurrentTime();
+
+			// ADDING THE GAME OVER TOAST
+			this.showCustomToast(STRING_GAMEOVER);
+
+			// SETTING THAT THE GAME OVER TOAST MUST NOT BE DISPLAYED AGAIN
+			this.gameOver = false;
 			}
 
 		// CHECKING IF THE ABOUT TOAST MUST BE DISPLAYED
