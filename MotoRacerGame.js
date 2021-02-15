@@ -84,6 +84,7 @@ MotoRacer.Game = function(game)
 	this.toastShadow = null;
 	this.toastTimeDelay = null;
 	this.toastTimeStamp = null;
+	this.toastContainer = null;
 
 	this.PTM = 50;
 	this.groundBody = null;
@@ -98,6 +99,7 @@ MotoRacer.Game = function(game)
 	this.wheelSpritesGraphic2 = null;
 	this.motoSprite = null;
 	this.backgroundEndless = null;
+	this.buttonsContainer = null;
 
 	this.isMobileDevice = null;
 
@@ -131,12 +133,16 @@ MotoRacer.Game.prototype = {
 		this.wheelSpritesGraphic2 = null;
 		this.motoSprite = null;
 		this.backgroundEndless = null;
+		this.buttonsContainer = null;
 
 		this.isMobileDevice = null;
 		},
 
 	create: function()
 		{
+		// CHECKING IS THE GAME IS RUNNING IN A MOBILE DEVICE
+		this.isMobileDevice = isMobileDevice();
+
 		// SETTING THE WORLD BOUNDS
 		game.world.setBounds(-1000, -1000, 20000, 1100);
 
@@ -224,6 +230,35 @@ MotoRacer.Game.prototype = {
 
 		// ADDING THE LINE 2 TO CONNECT THE MOTO WITH THE WHEEL 2
 		this.wheelSpritesLines[1] = new Phaser.Line(this.wheelSprites[1].x, this.wheelSprites[1].y, this.motoSprite.x, this.motoSprite.y);
+
+		// CHECKING IF IT IS A MOBILE DEVICE
+		if (this.isMobileDevice==true)
+			{
+			// ADDING THE BUTTONS CONTAINER
+			this.buttonsContainer = game.add.sprite(400, 380, "");
+			this.buttonsContainer.fixedToCamera = true;
+
+			// ADDING THE PAD PLUGIN
+			this.pad = this.game.plugins.add(Phaser.VirtualJoystick);
+
+			// ADDING THE BUTTON A
+			this.buttonA = this.pad.addButton(-350, 0, "dpad", "button1-up", "button1-down");
+			this.buttonA.sprite.scale.set(0.8);
+			this.buttonA.sprite.tint = 0xA9A9A9;
+			this.buttonA.sprite.inputEnabled = true;
+			this.buttonA.sprite.events.onInputDown.add(function(){this.cursors.left.isDown=true;},this);
+			this.buttonA.sprite.events.onInputUp.add(function(){this.cursors.left.isDown=false;},this);
+			this.buttonsContainer.addChild(this.buttonA.sprite)
+
+			// ADDING THE BUTTON B
+			this.buttonB = this.pad.addButton(350, 0, "dpad", "button2-up", "button2-down");
+			this.buttonB.sprite.scale.set(0.8);
+			this.buttonB.sprite.tint = 0xA9A9A9;
+			this.buttonB.sprite.inputEnabled = true;
+			this.buttonB.sprite.events.onInputDown.add(function(){this.cursors.right.isDown=true;},this);
+			this.buttonB.sprite.events.onInputUp.add(function(){this.cursors.right.isDown=false;},this);
+			this.buttonsContainer.addChild(this.buttonB.sprite)
+			}
 
 		// CHECKING IF THE ABOUT TOAST MUST BE DISPLAYED
 		if (this.toast==true)
