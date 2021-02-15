@@ -25,6 +25,12 @@ if (userLanguage.substring(0,2)=="es")
 	STRING_ABOUT = "Designed by www.lrusso.com";
 	}
 
+
+var line1;
+var line1Graphic = null;
+var line2;
+var line2Graphic = null;
+
 var MotoRacer = {showDebug: false};
 
 MotoRacer.Preloader = function () {};
@@ -207,6 +213,9 @@ MotoRacer.Game.prototype = {
 			// SETTING THAT THE ABOUT TOAST MUST NOT BE DISPLAYED AGAIN
 			this.toast = false;
 			}
+
+		line1 = new Phaser.Line(game.motoWheel1.x, game.motoWheel1.y, game.motoSprite.x, game.motoSprite.y);
+		line2 = new Phaser.Line(game.motoWheel2.x, game.motoWheel2.y, game.motoSprite.x, game.motoSprite.y);
 		},
 
 	update: function()
@@ -235,6 +244,34 @@ MotoRacer.Game.prototype = {
 		game.motoSprite.x += game.motoSprite.width / 2;
 		game.motoSprite.y += game.motoSprite.height / 2
 
+		line1.fromSprite(game.motoWheel1, game.motoSprite, false);
+		if (line1Graphic!=null)
+			{
+			line1Graphic.destroy();
+			}
+		line1Graphic = game.add.graphics(0,0);
+		line1Graphic.lineStyle(2, 0x000000, 1);
+		line1Graphic.moveTo(line1.start.x,line1.start.y);
+		line1Graphic.lineTo(line1.end.x,line1.end.y);
+		line1Graphic.endFill();
+
+		line2.fromSprite(game.motoWheel2, game.motoSprite, false);
+		if (line2Graphic!=null)
+			{
+			line2Graphic.destroy();
+			}
+		line2Graphic = game.add.graphics(0,0);
+		line2Graphic.lineStyle(2, 0x000000, 1);
+		line2Graphic.moveTo(line2.start.x,line2.start.y);
+		line2Graphic.lineTo(line2.end.x,line2.end.y);
+		line2Graphic.endFill();
+
+		// ANIMATING ENDLESS BACKGROUND
+		game.backgroundEndless.tilePosition.x = game.backgroundEndless.tilePosition.x - 0.5;
+
+		// BRINGING THE MOTOR SPRITE TO THE TOP
+		game.motoSprite.bringToTop();
+
 		var motorSpeed = 30; // rad/s
 		var motorEnabled = true;
 
@@ -256,9 +293,6 @@ MotoRacer.Game.prototype = {
 			this.driveJoints[i].EnableMotor(motorEnabled);
 			this.driveJoints[i].SetMotorSpeed(motorSpeed);
 			}
-
-		// ANIMATING ENDLESS BACKGROUND
-		game.backgroundEndless.tilePosition.x = game.backgroundEndless.tilePosition.x - 0.5;
 
 		// CHECKING IF THERE IS A TIMESTAMP FOR THE ABOUT TOAST
 		if (this.toastTimeStamp!=null)
