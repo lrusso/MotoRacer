@@ -382,7 +382,7 @@ MotoRacer.Game.prototype = {
 			this.driveJoints[i].SetMotorSpeed(motorSpeed);
 			}
 
-		// CHECKING IF THE USER IS MOVING FORWARD
+		// CHECKING IF THE MOTO SPRITE IS MOVING FORWARD
 		if (motorEnabled && motorSpeed>=50)
 			{
 			// ANIMATING FORWARD THE ENDLESS BACKGROUND
