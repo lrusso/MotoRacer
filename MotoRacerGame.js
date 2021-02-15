@@ -135,6 +135,19 @@ MotoRacer.Game.prototype = {
 		game.backgroundEndless = game.add.tileSprite(0, 0, 800, 500, "backgroundImg");
 		game.backgroundEndless.fixedToCamera = true;
 
+		this.groundVerticesGraphic = game.add.graphics(0, 0);
+		this.groundVerticesGraphic.beginFill(0xb5651d);
+		this.groundVerticesGraphic.lineStyle(2, 0x343434, 1);
+		for(var i = 0; i < this.groundVertices.length; i=i+2)
+			{
+			if (i==0)
+				{
+				this.groundVerticesGraphic.moveTo(this.groundVertices[i], this.groundVertices[i + 1]);
+				}
+			this.groundVerticesGraphic.lineTo(this.groundVertices[i], this.groundVertices[i +1]);
+			}
+		this.groundVerticesGraphic.endFill();
+
 		// Enable Box2D physics
 		game.physics.startSystem(Phaser.Physics.BOX2D);
 		game.physics.box2d.gravity.y = 500;
