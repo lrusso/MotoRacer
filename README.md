@@ -7,3 +7,7 @@ Moto Racer game developed in JavaScript.
 ## Web:
 
 https://lrusso.github.io/MotoRacer/MotoRacer.htm
+
+## Based on the work of:
+
+https://phaser.io/examples/v2/box2d/car-on-terrain
