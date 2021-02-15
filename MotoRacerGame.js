@@ -240,12 +240,12 @@ MotoRacer.Game.prototype = {
 		this.cursors = game.input.keyboard.createCursorKeys();
 
 		// ADDING THE RESTART BUTTON
-		this.buttonRestartShadow = game.add.sprite(771, 29, "restart");
+		this.buttonRestartShadow = game.add.sprite(770, 34, "restart");
 		this.buttonRestartShadow.anchor.set(0.5);
 		this.buttonRestartShadow.tint = 0x000000;
-		this.buttonRestartShadow.alpha = 0.7;
+		this.buttonRestartShadow.alpha = 0.85;
 		this.buttonRestartShadow.fixedToCamera = true;
-		this.buttonRestart = this.add.button(745, 3, "restart", null, this, 2, 1, 0);
+		this.buttonRestart = this.add.button(744, 8, "restart", null, this, 2, 1, 0);
 		this.buttonRestart.onInputUp.add(this.restartGame, this);
 		this.buttonRestart.fixedToCamera = true;
 
@@ -316,8 +316,8 @@ MotoRacer.Game.prototype = {
 
 		// ADDING THE SCORE BACKGROUND
 		this.scoreBackground = game.add.graphics();
-		this.scoreBackground.beginFill(0x000000, 0.5);
-		this.scoreBackground.lineStyle(2, 0x383838, 0.5);
+		this.scoreBackground.beginFill(0x000000, 0.65);
+		this.scoreBackground.lineStyle(2, 0x383838, 0.75);
 		this.scoreBackground.drawRoundedRect(10, 10, 100, 40, 10);
 		this.scoreBackground.fixedToCamera = true;
 
@@ -333,20 +333,25 @@ MotoRacer.Game.prototype = {
 		this.highScoreBackground = game.add.graphics();
 		this.highScoreBackground.beginFill(0x022C5C, 1);
 		this.highScoreBackground.lineStyle(2, 0x0046A9, 1);
-		this.highScoreBackground.drawRoundedRect(50, -540, 100, 40, 10);
+		this.highScoreBackground.drawRoundedRect(625, 10, 110, 40, 10);
+		this.highScoreBackground.fixedToCamera = true;
 
 		// ADDING THE HIGH SCORE ICON SHADOW
-		this.highScoreIconShadow = game.add.sprite(59, -530, "highScoreImg");
+		this.highScoreIconShadow = game.add.sprite(633, 19, "highScoreImg");
 		this.highScoreIconShadow.tint = 0x000000;
+		this.highScoreIconShadow.fixedToCamera = true;
 
 		// ADDING THE HIGH SCORE ICON
-		this.highScoreIcon = game.add.sprite(57, -532, "highScoreImg");
+		this.highScoreIcon = game.add.sprite(631, 17, "highScoreImg");
+		this.highScoreIcon.fixedToCamera = true;
 
 		// ADDING THE SCORE LABEL SHADOW
-		this.highScoreLabelShadow = game.add.text(92, -535, this.getHighscore(), { font: "bold 30px Arial", fill: "#000", boundsAlignH: "center", boundsAlignV: "middle" });
+		this.highScoreLabelShadow = game.add.text(665, 14.5, this.getHighscore(), { font: "bold 30px Arial", fill: "#000", boundsAlignH: "center", boundsAlignV: "middle" });
+		this.highScoreLabelShadow.fixedToCamera = true;
 
 		// ADDING THE SCORE LABEL
-		this.highScoreLabel = game.add.text(89, -537, this.getHighscore(), { font: "bold 30px Arial", fill: "#FFF", boundsAlignH: "center", boundsAlignV: "middle" });
+		this.highScoreLabel = game.add.text(663, 12.5, this.getHighscore(), { font: "bold 30px Arial", fill: "#FFF", boundsAlignH: "center", boundsAlignV: "middle" });
+		this.highScoreLabel.fixedToCamera = true;
 
 		// CHECKING IF IT IS A MOBILE DEVICE
 		if (this.isMobileDevice==true)
