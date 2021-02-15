@@ -233,6 +233,12 @@ MotoRacer.Game.prototype = {
 		// ADDING THE LINE 2 TO CONNECT THE MOTO WITH THE WHEEL 2
 		this.wheelSpritesLines[1] = new Phaser.Line(this.wheelSprites[1].x, this.wheelSprites[1].y, this.motoSprite.x, this.motoSprite.y);
 
+		// ADDING THE GRAPHIC 1 TO CONNECT THE MOTO WITH THE WHEEL 1
+		this.wheelSpritesGraphic1 = game.add.graphics(0,0);
+
+		// ADDING THE GRAPHIC 2 TO CONNECT THE MOTO WITH THE WHEEL 2
+		this.wheelSpritesGraphic2 = game.add.graphics(0,0);
+
 		// SETTING THE CALLBACK WHEN THE MOTO SPRITE HITS THE GROUND
 		this.motoBody.setFixtureContactCallback(this.groundBody, function (a,b,c,d,e)
 			{
@@ -331,15 +337,8 @@ MotoRacer.Game.prototype = {
 		// DRAWING AN INVISIBLE LINE BETWEEN THE WHEEL 1 AND THE MOTO SPRITE
 		this.wheelSpritesLines[0].fromSprite(this.wheelSprites[0], this.motoSprite, false);
 
-		// CHECKING IF THERE IS A PREVIOUS LINE DRAWN BETWEEN THE WHEEL 1 AND THE MOTO SPRITE
-		if (this.wheelSpritesGraphic1!=null)
-			{
-			// DESTROYING ANY PREVIOUS LINE DRAWN BETWEEN THE WHEEL 1 AND THE MOTO SPRITE
-			this.wheelSpritesGraphic1.destroy();
-			}
-
 		// DRAWING A LINE BETWEEN THE WHEEL 1 AND THE MOTO SPRITE
-		this.wheelSpritesGraphic1 = game.add.graphics(0,0);
+		this.wheelSpritesGraphic1.clear();
 		this.wheelSpritesGraphic1.lineStyle(2, 0x000000, 1);
 		this.wheelSpritesGraphic1.moveTo(this.wheelSpritesLines[0].start.x,this.wheelSpritesLines[0].start.y);
 		this.wheelSpritesGraphic1.lineTo(this.wheelSpritesLines[0].end.x,this.wheelSpritesLines[0].end.y);
@@ -348,14 +347,8 @@ MotoRacer.Game.prototype = {
 		// DRAWING AN INVISIBLE LINE BETWEEN THE WHEEL 1 AND THE MOTO SPRITE
 		this.wheelSpritesLines[1].fromSprite(this.wheelSprites[1], this.motoSprite, false);
 
-		// CHECKING IF THERE IS A PREVIOUS LINE DRAWN BETWEEN THE WHEEL 2 AND THE MOTO SPRITE
-		if (this.wheelSpritesGraphic2!=null)
-			{
-			// DESTROYING ANY PREVIOUS LINE DRAWN BETWEEN THE WHEEL 2 AND THE MOTO SPRITE
-			this.wheelSpritesGraphic2.destroy();
-			}
-
 		// DRAWING A LINE BETWEEN THE WHEEL 2 AND THE MOTO SPRITE
+		this.wheelSpritesGraphic2.clear();
 		this.wheelSpritesGraphic2 = game.add.graphics(0,0);
 		this.wheelSpritesGraphic2.lineStyle(2, 0x000000, 1);
 		this.wheelSpritesGraphic2.moveTo(this.wheelSpritesLines[1].start.x,this.wheelSpritesLines[1].start.y);
