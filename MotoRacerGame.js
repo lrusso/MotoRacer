@@ -86,7 +86,7 @@ MotoRacer.Game = function(game)
 	this.PTM = 50;
 	this.frequency = 3.5;
 	this.damping = 0.5;
-	this.motorTorque = 2;
+	this.motorTorque = 1;
 	this.rideHeight = 0.5;
 
 	this.groundBody = null;
@@ -349,9 +349,11 @@ MotoRacer.Game.prototype = {
 			}
 		else if (this.cursors.right.isDown && !this.cursors.left.isDown)
 			{
+			this.motorTorque = 2;
 			}
 		else
 			{
+			this.motorTorque = 1;
 			motorEnabled = false;
 			}
 
