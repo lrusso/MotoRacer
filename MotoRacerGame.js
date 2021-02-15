@@ -20,12 +20,12 @@ var STRING_GAMEOVER = "";
 if (userLanguage.substring(0,2)=="es")
 	{
 	STRING_ABOUT = "Dise" + String.fromCharCode(241) + "ado por www.lrusso.com";
-	STRING_GAMEOVER = "Juego perdido";
+	STRING_GAMEOVER = "Juego perdido. Int" + String.fromCharCode(233) + "ntalo de nuevo.";
 	}
 	else
 	{
 	STRING_ABOUT = "Designed by www.lrusso.com";
-	STRING_GAMEOVER = "Game Over";
+	STRING_GAMEOVER = "Game Over. Try again.";
 	}
 
 var MotoRacer = {showDebug: false};
