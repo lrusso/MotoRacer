@@ -48,9 +48,6 @@ MotoRacer.Preloader.prototype = {
 		this.scale.pageAlignHorizontally = true;
 		this.scale.pageAlignVertically = true;
 		this.scale.refresh();
-
-		// STARTING THE PHYSICS SYSTEM
-		this.physics.startSystem(Phaser.Physics.P2JS);
 		},
 
 	preload: function()
