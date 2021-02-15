@@ -355,9 +355,6 @@ MotoRacer.Game.prototype = {
 		this.wheelSpritesGraphic2.lineTo(this.wheelSpritesLines[1].end.x,this.wheelSpritesLines[1].end.y);
 		this.wheelSpritesGraphic2.endFill();
 
-		// ANIMATING ENDLESS BACKGROUND
-		this.backgroundEndless.tilePosition.x = this.backgroundEndless.tilePosition.x - 0.5;
-
 		// BRINGING THE MOTOR SPRITE TO THE TOP
 		this.motoSprite.bringToTop();
 
@@ -383,6 +380,13 @@ MotoRacer.Game.prototype = {
 			{
 			this.driveJoints[i].EnableMotor(motorEnabled);
 			this.driveJoints[i].SetMotorSpeed(motorSpeed);
+			}
+
+		// CHECKING IF THE USER IS MOVING FORWARD
+		if (motorEnabled && motorSpeed>=50)
+			{
+			// ANIMATING FORWARD THE ENDLESS BACKGROUND
+			this.backgroundEndless.tilePosition.x = this.backgroundEndless.tilePosition.x - 0.5;
 			}
 
 		// CHECKING IF THERE IS A TIMESTAMP FOR THE ABOUT TOAST
