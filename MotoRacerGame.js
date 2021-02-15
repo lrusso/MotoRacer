@@ -25,10 +25,6 @@ if (userLanguage.substring(0,2)=="es")
 	STRING_ABOUT = "Designed by www.lrusso.com";
 	}
 
-
-var line1Graphic = null;
-var line2Graphic = null;
-
 var MotoRacer = {showDebug: false};
 
 MotoRacer.Preloader = function () {};
