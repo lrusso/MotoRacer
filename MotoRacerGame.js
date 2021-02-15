@@ -343,12 +343,12 @@ MotoRacer.Game.prototype = {
 		// BRINGING THE MOTOR SPRITE TO THE TOP
 		this.motoSprite.bringToTop();
 
-		var motorSpeed = 30; // RAD/S
+		var motorSpeed = 50; // RAD/S
 		var motorEnabled = true;
 
 		if (this.cursors.left.isDown && !this.cursors.right.isDown)
 			{
-			motorSpeed *= -1;
+			motorSpeed *= -1;motorSpeed = 0;
 			}
 		else if (this.cursors.right.isDown && !this.cursors.left.isDown)
 			{
