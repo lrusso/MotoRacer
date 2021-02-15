@@ -183,18 +183,18 @@ MotoRacer.Game.prototype = {
 		this.motoBody.setPolygon(this.truckVertices);
 
 		// ADDING THE WHEEL BODY 1
-		this.wheelBodies[0] = new Phaser.Physics.Box2D.Body(this.game, null, -0.82*this.PTM, 0.6*-this.PTM);
+		this.wheelBodies[0] = new Phaser.Physics.Box2D.Body(this.game, null, -0.2*this.PTM, 0.6*-this.PTM);
 		this.wheelBodies[0].setCircle(0.275*this.PTM);
 
 		// ADDING THE WHEEL BODY 2
-		this.wheelBodies[1] = new Phaser.Physics.Box2D.Body(this.game, null,  1.05*this.PTM, 0.6*-this.PTM);
+		this.wheelBodies[1] = new Phaser.Physics.Box2D.Body(this.game, null, 0.2*this.PTM, 0.6*-this.PTM);
 		this.wheelBodies[1].setCircle(0.275*this.PTM);
 
 		// CREATING THE WHEEL JOINT 1 - BODYA, BODYB, AX, AY, BX, BY, AXISX, AXISY, FREQUENCY, DAMPING, MOTORSPEED, MOTORTORQUE, MOTORENABLED
-		this.driveJoints[0] = game.physics.box2d.wheelJoint(this.motoBody, this.wheelBodies[0], -0.51*this.PTM,this.rideHeight*this.PTM, 0,0, 0,1, this.frequency, this.damping, 0, this.motorTorque, true );
+		this.driveJoints[0] = game.physics.box2d.wheelJoint(this.motoBody, this.wheelBodies[0], -0.51*this.PTM,this.rideHeight*this.PTM, 0,0, 0,1, this.frequency, this.damping, 0, this.motorTorque, true);
 
 		// CREATING THE WHEEL JOINT 2 - BODYA, BODYB, AX, AY, BX, BY, AXISX, AXISY, FREQUENCY, DAMPING, MOTORSPEED, MOTORTORQUE, MOTORENABLED
-		this.driveJoints[1] = game.physics.box2d.wheelJoint(this.motoBody, this.wheelBodies[1],  0.51*this.PTM,this.rideHeight*this.PTM, 0,0, 0,1, this.frequency, this.damping, 0, this.motorTorque, true );
+		this.driveJoints[1] = game.physics.box2d.wheelJoint(this.motoBody, this.wheelBodies[1],  0.51*this.PTM,this.rideHeight*this.PTM, 0,0, 0,1, this.frequency, this.damping, 0, this.motorTorque, true);
 
 		// GETTING THE CURSOR KEYS
 		this.cursors = game.input.keyboard.createCursorKeys();
