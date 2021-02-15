@@ -349,9 +349,6 @@ MotoRacer.Game.prototype = {
 		// ADDING THE SCORE LABEL
 		this.highScoreLabel = game.add.text(89, -537, this.getHighscore(), { font: "bold 30px Arial", fill: "#FFF", boundsAlignH: "center", boundsAlignV: "middle" });
 
-
-
-
 		// CHECKING IF IT IS A MOBILE DEVICE
 		if (this.isMobileDevice==true)
 			{
@@ -579,7 +576,7 @@ MotoRacer.Game.prototype = {
 		{
 		try
 			{
-			var name = "highscore";
+			var name = "highscoreMotoRacer";
 			var nameEQ = name + "=";
 			var ca = document.cookie.split(";");
 
@@ -604,7 +601,7 @@ MotoRacer.Game.prototype = {
 		{
 		try
 			{
-			var name = "highscore";
+			var name = "highscoreMotoRacer";
 			var value = newHighscore;
 			var days = 999;
 			var expires = "";
