@@ -91,11 +91,15 @@ MotoRacer.Game = function(game)
 	this.toastTimeDelay = null;
 	this.toastTimeStamp = null;
 
+	this.PTM = 50;
+	this.groundBody = null;
 	this.groundVertices = [-200,-0,-130,5,-89,-0,-31,1,1,5,50,4,87,-2,148,-4,200,-0,251,4,289,13,335,18,369,9,383,14,410,3,433,2,467,10,487,20,512,23,545,8,571,1,591,-16,623,-24,647,-20,678,-22,695,-35,743,-44,776,-40,820,-25,870,-22,912,-37,934,-44,954,-38,974,-45,996,-39,1037,-49,1059,-63,1086,-84,1115,-85,1153,-72,1193,-77,1227,-91,1252,-110,1277,-108,1281,-127,1306,-141,1331,-144,1355,-155,1401,-175,1441,-173,1505,-153,1566,-143,1604,-141,1653,-154,1687,-141,1715,-112,1743,-57,1764,-35,1783,-43,1804,-96,1805,-132,1812,-142,1873,-149,1931,-140,2023,-126,2066,-143,2088,-166,2102,-189,2130,-204,2168,-207,2234,-205,2261,-191,2286,-163,2316,-117,2340,-82,2383,-55,2437,-41,2483,-37,2507,-40,2535,-46,2553,-51,2588,-80,2609,-94,2626,-113,2646,-132,2671,-154,2686,-164,2714,-175,2758,-179,2952,-178,2952,-205,3064,-204,3099,-189,3177,-190,3184,-214,3274,-203,3324,-185,3421,-169,3484,-159,3559,-158,3613,-168,3646,-173,3681,-168,3695,-99,3712,75,3777,211,3829,115,3882,285,3908,203,3963,283,3989,55,4049,183,4079,-4,4092,-32,4113,-41,4167,-36,4262,-9,4372,29,4504,43,4649,49,4674,29,4713,14,4760,14,4803,38,4819,15,4858,-1,4896,5,4925,31,4960,17,5006,15,5050,24,5078,41,5898,41,5899,115,-200,115,-200,0,-199,0,-129,5];
 	this.truckVertices = [-33,5,-20,7,10,-28,10,-28,27,7,25,0];
-	this.truckBody = null;
+	this.motoBody = null;
 	this.driveJoints = [];
 	this.wheelBodies = [];
+	this.wheelSprites = [];
+	this.motoSprite = null;
 	this.backgroundEndless = null;
 
 	this.isMobileDevice = null;
@@ -120,9 +124,12 @@ MotoRacer.Game.prototype = {
 
 	init: function()
 		{
-		this.truckBody = null;
+		this.groundBody = null;
+		this.motoBody = null;
 		this.driveJoints = [];
 		this.wheelBodies = [];
+		this.wheelSprites = [];
+		this.motoSprite = null;
 		this.backgroundEndless = null;
 
 		this.isMobileDevice = null;
@@ -130,11 +137,14 @@ MotoRacer.Game.prototype = {
 
 	create: function()
 		{
+		// SETTING THE WORLD BOUNDS
 		game.world.setBounds(-1000, -1000, 20000, 1100);
 
-		game.backgroundEndless = game.add.tileSprite(0, 0, 800, 500, "backgroundImg");
-		game.backgroundEndless.fixedToCamera = true;
+		// ADDING THE ENDLESS BACKGROUND
+		this.backgroundEndless = game.add.tileSprite(0, 0, 800, 500, "backgroundImg");
+		this.backgroundEndless.fixedToCamera = true;
 
+		// DRAWING THE GROUND
 		this.groundVerticesGraphic = game.add.graphics(0, 0);
 		this.groundVerticesGraphic.beginFill(0x894c16);
 		this.groundVerticesGraphic.lineStyle(2, 0x343434, 1);
@@ -148,40 +158,40 @@ MotoRacer.Game.prototype = {
 			}
 		this.groundVerticesGraphic.endFill();
 
-		// Enable Box2D physics
+		// ENABLING THE BOX2D PHYSICS
 		game.physics.startSystem(Phaser.Physics.BOX2D);
 		game.physics.box2d.gravity.y = 500;
 		game.physics.box2d.friction = 0.8;
 
-		// Make the ground body
-		var groundBody = new Phaser.Physics.Box2D.Body(this.game, null, 0, 0, 0);
-		groundBody.setChain(this.groundVertices);
+		// ADDING THE GROUND BODY
+		this.groundBody = new Phaser.Physics.Box2D.Body(this.game, null, 0, 0, 0);
+		this.groundBody.setChain(this.groundVertices);
 
-		var PTM = 50;
+		// ADDING THE MOTO BODY
+		this.motoBody = new Phaser.Physics.Box2D.Body(this.game, null, 0, -1*this.PTM);
+		this.motoBody.setPolygon(this.truckVertices);
 
-		// Make the truck body
-		truckBody = new Phaser.Physics.Box2D.Body(this.game, null, 0, -1*PTM);
-		truckBody.setPolygon(this.truckVertices);
+		// ADDING THE WHEEL BODY 1
+		this.wheelBodies[0] = new Phaser.Physics.Box2D.Body(this.game, null, -0.82*this.PTM, 0.6*-this.PTM);
+		this.wheelBodies[0].setCircle(0.275*this.PTM);
 
-		// Make the wheel bodies
-		this.wheelBodies[0] = new Phaser.Physics.Box2D.Body(this.game, null, -0.82*PTM, 0.6*-PTM);
-		this.wheelBodies[1] = new Phaser.Physics.Box2D.Body(this.game, null,  1.05*PTM, 0.6*-PTM);
-		this.wheelBodies[0].setCircle(0.275*PTM);
-		this.wheelBodies[1].setCircle(0.275*PTM);
+		// ADDING THE WHEEL BODY 2
+		this.wheelBodies[1] = new Phaser.Physics.Box2D.Body(this.game, null,  1.05*this.PTM, 0.6*-this.PTM);
+		this.wheelBodies[1].setCircle(0.275*this.PTM);
 
 		var frequency = 3.5;
 		var damping = 0.5;
 		var motorTorque = 2;
 		var rideHeight = 0.5;
 
-		// Make wheel joints
-		// bodyA, bodyB, ax, ay, bx, by, axisX, axisY, frequency, damping, motorSpeed, motorTorque, motorEnabled
-		this.driveJoints[0] = game.physics.box2d.wheelJoint(truckBody, this.wheelBodies[0], -0.51*PTM,rideHeight*PTM, 0,0, 0,1, frequency, damping, 0, motorTorque, true ); // rear
-		this.driveJoints[1] = game.physics.box2d.wheelJoint(truckBody, this.wheelBodies[1],  0.51*PTM,rideHeight*PTM, 0,0, 0,1, frequency, damping, 0, motorTorque, true ); // front
+		// CREATING THE WHEEL JOINT 1 - BODYA, BODYB, AX, AY, BX, BY, AXISX, AXISY, FREQUENCY, DAMPING, MOTORSPEED, MOTORTORQUE, MOTORENABLED
+		this.driveJoints[0] = game.physics.box2d.wheelJoint(this.motoBody, this.wheelBodies[0], -0.51*this.PTM,rideHeight*this.PTM, 0,0, 0,1, frequency, damping, 0, motorTorque, true ); // rear
 
-		cursors = game.input.keyboard.createCursorKeys();
+		// CREATING THE WHEEL JOINT 2 - BODYA, BODYB, AX, AY, BX, BY, AXISX, AXISY, FREQUENCY, DAMPING, MOTORSPEED, MOTORTORQUE, MOTORENABLED
+		this.driveJoints[1] = game.physics.box2d.wheelJoint(this.motoBody, this.wheelBodies[1],  0.51*this.PTM,rideHeight*this.PTM, 0,0, 0,1, frequency, damping, 0, motorTorque, true ); // front
 
-		game.camera.follow(truckBody);
+		// GETTING THE CURSOR KEYS
+		this.cursors = game.input.keyboard.createCursorKeys();
 
 		// ADDING THE RESTART BUTTON
 		this.buttonRestartShadow = game.add.sprite(771, 29, "restart");
@@ -193,13 +203,24 @@ MotoRacer.Game.prototype = {
 		this.buttonRestart.onInputUp.add(this.restartGame, this);
 		this.buttonRestart.fixedToCamera = true;
 
-		game.motoWheel1 = game.add.sprite(0, 0, "wheel");
-		game.motoWheel2 = game.add.sprite(0, 0, "wheel");
-		game.motoSprite = game.add.sprite(300, 0, "moto");
+		// ADDING THE WHEEL SPRITE 1
+		this.wheelSprites[0] = game.add.sprite(0, 0, "wheel");
+
+		// ADDING THE WHEEL SPRITE 2
+		this.wheelSprites[1] = game.add.sprite(0, 0, "wheel");
+
+		// ADDING THE MOTO SPRITE
+		this.motoSprite = game.add.sprite(300, 0, "moto");
 
 		// ADDING THE TOAST CONTAINER
 		this.toastContainer = game.add.sprite(400, 380, "");
 		this.toastContainer.fixedToCamera = true;
+
+		// MAKING THE CAMERA TO FOLLOW THE MOTO BODY
+		game.camera.follow(this.motoBody);
+
+		line1 = new Phaser.Line(this.wheelSprites[0].x, this.wheelSprites[0].y, this.motoSprite.x, this.motoSprite.y);
+		line2 = new Phaser.Line(this.wheelSprites[1].x, this.wheelSprites[1].y, this.motoSprite.x, this.motoSprite.y);
 
 		// CHECKING IF THE ABOUT TOAST MUST BE DISPLAYED
 		if (this.toast==true)
@@ -213,38 +234,39 @@ MotoRacer.Game.prototype = {
 			// SETTING THAT THE ABOUT TOAST MUST NOT BE DISPLAYED AGAIN
 			this.toast = false;
 			}
-
-		line1 = new Phaser.Line(game.motoWheel1.x, game.motoWheel1.y, game.motoSprite.x, game.motoSprite.y);
-		line2 = new Phaser.Line(game.motoWheel2.x, game.motoWheel2.y, game.motoSprite.x, game.motoSprite.y);
 		},
 
 	update: function()
 		{
-		game.motoWheel1.position.x = this.wheelBodies[0].x - 13;
-		game.motoWheel1.position.y = this.wheelBodies[0].y - 13;
-		game.motoWheel1.rotation = this.wheelBodies[0].rotation;
-		game.motoWheel1.pivot.x = game.motoWheel1.width / 2;
-		game.motoWheel1.pivot.y = game.motoWheel1.height / 2;
-		game.motoWheel1.x += game.motoWheel1.width / 2;
-		game.motoWheel1.y += game.motoWheel1.height / 2
+		// THE WHEEL SPRITE 1 MUST FOLLOW THE WHEEL 1
+		this.wheelSprites[0].position.x = this.wheelBodies[0].x - 13;
+		this.wheelSprites[0].position.y = this.wheelBodies[0].y - 13;
+		this.wheelSprites[0].rotation = this.wheelBodies[0].rotation;
+		this.wheelSprites[0].pivot.x = this.wheelSprites[0].width / 2;
+		this.wheelSprites[0].pivot.y = this.wheelSprites[0].height / 2;
+		this.wheelSprites[0].x += this.wheelSprites[0].width / 2;
+		this.wheelSprites[0].y += this.wheelSprites[0].height / 2
 
-		game.motoWheel2.position.x = this.wheelBodies[1].x - 13;
-		game.motoWheel2.position.y = this.wheelBodies[1].y - 13;
-		game.motoWheel2.rotation = this.wheelBodies[1].rotation;
-		game.motoWheel2.pivot.x = game.motoWheel2.width / 2;
-		game.motoWheel2.pivot.y = game.motoWheel2.height / 2;
-		game.motoWheel2.x += game.motoWheel2.width / 2;
-		game.motoWheel2.y += game.motoWheel2.height / 2
+		// THE WHEEL SPRITE 2 MUST FOLLOW THE WHEEL 2
+		this.wheelSprites[1].position.x = this.wheelBodies[1].x - 13;
+		this.wheelSprites[1].position.y = this.wheelBodies[1].y - 13;
+		this.wheelSprites[1].rotation = this.wheelBodies[1].rotation;
+		this.wheelSprites[1].pivot.x = this.wheelSprites[1].width / 2;
+		this.wheelSprites[1].pivot.y = this.wheelSprites[1].height / 2;
+		this.wheelSprites[1].x += this.wheelSprites[1].width / 2;
+		this.wheelSprites[1].y += this.wheelSprites[1].height / 2
 
-		game.motoSprite.position.x = truckBody.x - 47;
-		game.motoSprite.position.y = truckBody.y - 47;
-		game.motoSprite.rotation = truckBody.rotation;
-		game.motoSprite.pivot.x = game.motoSprite.width / 2;
-		game.motoSprite.pivot.y = game.motoSprite.height / 2;
-		game.motoSprite.x += game.motoSprite.width / 2;
-		game.motoSprite.y += game.motoSprite.height / 2
+		// THE MOTO SPRITE MUST FOLLOW THE MOTO BODY
+		this.motoSprite.position.x = this.motoBody.x - 47;
+		this.motoSprite.position.y = this.motoBody.y - 47;
+		this.motoSprite.rotation = this.motoBody.rotation;
+		this.motoSprite.pivot.x = this.motoSprite.width / 2;
+		this.motoSprite.pivot.y = this.motoSprite.height / 2;
+		this.motoSprite.x += this.motoSprite.width / 2;
+		this.motoSprite.y += this.motoSprite.height / 2
 
-		line1.fromSprite(game.motoWheel1, game.motoSprite, false);
+		// 
+		line1.fromSprite(this.wheelSprites[0], this.motoSprite, false);
 		if (line1Graphic!=null)
 			{
 			line1Graphic.destroy();
@@ -255,7 +277,7 @@ MotoRacer.Game.prototype = {
 		line1Graphic.lineTo(line1.end.x,line1.end.y);
 		line1Graphic.endFill();
 
-		line2.fromSprite(game.motoWheel2, game.motoSprite, false);
+		line2.fromSprite(this.wheelSprites[1], this.motoSprite, false);
 		if (line2Graphic!=null)
 			{
 			line2Graphic.destroy();
@@ -267,19 +289,19 @@ MotoRacer.Game.prototype = {
 		line2Graphic.endFill();
 
 		// ANIMATING ENDLESS BACKGROUND
-		game.backgroundEndless.tilePosition.x = game.backgroundEndless.tilePosition.x - 0.5;
+		this.backgroundEndless.tilePosition.x = this.backgroundEndless.tilePosition.x - 0.5;
 
 		// BRINGING THE MOTOR SPRITE TO THE TOP
-		game.motoSprite.bringToTop();
+		this.motoSprite.bringToTop();
 
-		var motorSpeed = 30; // rad/s
+		var motorSpeed = 30; // RAD/S
 		var motorEnabled = true;
 
-		if (cursors.left.isDown && !cursors.right.isDown)
+		if (this.cursors.left.isDown && !this.cursors.right.isDown)
 			{
 			motorSpeed *= -1;
 			}
-		else if (cursors.right.isDown && !cursors.left.isDown)
+		else if (this.cursors.right.isDown && !this.cursors.left.isDown)
 			{
 			}
 		else
