@@ -199,7 +199,7 @@ MotoRacer.Game.prototype = {
 
 		// DRAWING THE GROUND
 		this.groundVerticesGraphic = game.add.graphics(0, 0);
-		this.groundVerticesGraphic.beginFill(0xfba101);
+		this.groundVerticesGraphic.beginFill(0xfeab17);
 		this.groundVerticesGraphic.lineStyle(1, 0xe29101, 1);
 		for(var i = 0; i < this.groundVertices.length; i=i+2)
 			{
@@ -368,7 +368,6 @@ MotoRacer.Game.prototype = {
 			// ADDING THE BUTTON A
 			this.buttonA = this.pad.addButton(-350, 0, "dpad", "button1-up", "button1-down");
 			this.buttonA.sprite.scale.set(0.8);
-			this.buttonA.sprite.tint = 0xA9A9A9;
 			this.buttonA.sprite.inputEnabled = true;
 			this.buttonA.sprite.events.onInputDown.add(function(){this.cursors.left.isDown=true;},this);
 			this.buttonA.sprite.events.onInputUp.add(function(){this.cursors.left.isDown=false;},this);
@@ -377,7 +376,6 @@ MotoRacer.Game.prototype = {
 			// ADDING THE BUTTON B
 			this.buttonB = this.pad.addButton(350, 0, "dpad", "button2-up", "button2-down");
 			this.buttonB.sprite.scale.set(0.8);
-			this.buttonB.sprite.tint = 0xA9A9A9;
 			this.buttonB.sprite.inputEnabled = true;
 			this.buttonB.sprite.events.onInputDown.add(function(){this.cursors.right.isDown=true;},this);
 			this.buttonB.sprite.events.onInputUp.add(function(){this.cursors.right.isDown=false;},this);
