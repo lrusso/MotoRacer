@@ -491,13 +491,6 @@ MotoRacer.Game.prototype = {
 		// SETTING THE FUNCTION THAT WILL BE CALLED WHEN THE MOTO OVERLAPS A COIN
 		game.physics.arcade.overlap(this.motoSprite, this.coins, this.collectCoin, null, this);
 
-		// CHECKING IF THE MOTO SPRITE IS MOVING FORWARD
-		if (motorEnabled && motorSpeed>=50)
-			{
-			// ANIMATING FORWARD THE ENDLESS BACKGROUND
-			//this.backgroundEndless.tilePosition.x = this.backgroundEndless.tilePosition.x - 0.5;
-			}
-
 		// CHECKING IF THE MOTO SPRITE FALL INTO THE ABYSS
 		if (this.motoSprite.position.y>200)
 			{
