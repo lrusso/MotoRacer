@@ -251,17 +251,6 @@ MotoRacer.Game.prototype = {
 		// ADDING THE WHEEL SPRITE 2
 		this.wheelSprites[1] = game.add.sprite(0, 0, "wheel");
 
-		// ADDING THE MOTO SPRITE
-		this.motoSprite = game.add.sprite(300, 0, "moto");
-		game.physics.arcade.enable(this.motoSprite);
-
-		// ADDING THE TOAST CONTAINER
-		this.toastContainer = game.add.sprite(400, 380, "");
-		this.toastContainer.fixedToCamera = true;
-
-		// MAKING THE CAMERA TO FOLLOW THE MOTO BODY
-		game.camera.follow(this.motoBody);
-
 		// ADDING THE GRAPHIC 1 CONTAINER
 		this.wheelSpritesGraphic1Container = game.add.sprite(0, 0, "");
 
@@ -283,6 +272,17 @@ MotoRacer.Game.prototype = {
 		this.wheelSpritesGraphic2.lineTo(-15,-15);
 		this.wheelSpritesGraphic2.endFill();
 		this.wheelSpritesGraphic2Container.addChild(this.wheelSpritesGraphic2);
+
+		// ADDING THE MOTO SPRITE
+		this.motoSprite = game.add.sprite(300, 0, "moto");
+		game.physics.arcade.enable(this.motoSprite);
+
+		// ADDING THE TOAST CONTAINER
+		this.toastContainer = game.add.sprite(400, 380, "");
+		this.toastContainer.fixedToCamera = true;
+
+		// MAKING THE CAMERA TO FOLLOW THE MOTO BODY
+		game.camera.follow(this.motoBody);
 
 		// SETTING THE CALLBACK WHEN THE MOTO SPRITE HITS THE GROUND
 		this.motoBody.setFixtureContactCallback(this.groundBody, function (a,b,c,d,e)
@@ -411,9 +411,6 @@ MotoRacer.Game.prototype = {
 			// SETTING THAT THE ABOUT TOAST MUST NOT BE DISPLAYED AGAIN
 			this.toast = false;
 			}
-
-		// BRINGING THE MOTOR SPRITE TO THE TOP
-		this.motoSprite.bringToTop();
 		},
 
 	update: function()
