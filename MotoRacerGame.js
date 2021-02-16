@@ -309,6 +309,15 @@ MotoRacer.Game.prototype = {
 		this.coinsArray.push([350,-50]);
 		this.coinsArray.push([820,-80]);
 		this.coinsArray.push([1400,-230]);
+		this.coinsArray.push([1800,-200]);
+		this.coinsArray.push([2150,-270]);
+		this.coinsArray.push([3110,-250]);
+		this.coinsArray.push([4710,-40]);
+		this.coinsArray.push([4830,-60]);
+		this.coinsArray.push([4970,-40]);
+		this.coinsArray.push([5370,-20]);
+		this.coinsArray.push([5470,-20]);
+		this.coinsArray.push([5570,-20]);
 
 		// ADDING THE COINS TO THE MAP
 		for (var i = 0; i < this.coinsArray.length; i++)
@@ -415,6 +424,9 @@ MotoRacer.Game.prototype = {
 			// SETTING THAT THE ABOUT TOAST MUST NOT BE DISPLAYED AGAIN
 			this.toast = false;
 			}
+
+		// BRINGING THE MOTO SPRITE TO THE TOP
+		this.motoSprite.bringToTop();
 		},
 
 	update: function()
