@@ -485,28 +485,38 @@ MotoRacer.Game.prototype = {
 		// CHECKING IF THE CONTROLS ARE BLOCKED
 		if (this.blockedControls==true)
 			{
+			// SETTING NO SPEED FOR THE MOTORS
 			motorSpeed = 0;
+
+			// ENABLING THE MOTORS
 			motorEnabled = true;
 			}
 			else
 			{
+			// CHECKING IF THE LEFT KEY IS PRESSED
 			if (this.cursors.left.isDown && !this.cursors.right.isDown)
 				{
+				// SETTING NO SPEED FOR THE MOTORS
 				motorSpeed = 0;
 				}
+			// CHECKING IF THE RIGHT KEY IS PRESSED
 			else if (this.cursors.right.isDown && !this.cursors.left.isDown)
 				{
+				// INCREASING THE MOTOR STRENGTH
 				this.motorTorque = 2;
 				}
 			else
 				{
+				// DECREASING THE MOTOR STRENGTH
 				this.motorTorque = 1;
+
+				// DISABLING THE MOTORS
 				motorEnabled = false;
 				}
 			}
 
-		// ROLL IF NO KEYS PRESSED
-		for (var i = 0; i < 2; i++)
+		// ROLLING IF NO KEYS WERE PRESSED
+		for (var i = 0; i < this.driveJoints.length; i++)
 			{
 			this.driveJoints[i].EnableMotor(motorEnabled);
 			this.driveJoints[i].SetMotorSpeed(motorSpeed);
