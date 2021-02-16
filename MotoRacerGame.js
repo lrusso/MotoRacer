@@ -413,7 +413,7 @@ MotoRacer.Game.prototype = {
 
 	update: function()
 		{
-		// THE WHEEL SPRITE 1 MUST FOLLOW THE WHEEL 1
+		// THE WHEEL SPRITE 1 MUST FOLLOW THE WHEEL BODY 1
 		this.wheelSprites[0].position.x = this.wheelBodies[0].x - 13;
 		this.wheelSprites[0].position.y = this.wheelBodies[0].y - 13;
 		this.wheelSprites[0].rotation = this.wheelBodies[0].rotation;
@@ -422,7 +422,7 @@ MotoRacer.Game.prototype = {
 		this.wheelSprites[0].x += this.wheelSprites[0].width / 2;
 		this.wheelSprites[0].y += this.wheelSprites[0].height / 2
 
-		// THE WHEEL SPRITE 2 MUST FOLLOW THE WHEEL 2
+		// THE WHEEL SPRITE 2 MUST FOLLOW THE WHEEL BODY 2
 		this.wheelSprites[1].position.x = this.wheelBodies[1].x - 13;
 		this.wheelSprites[1].position.y = this.wheelBodies[1].y - 13;
 		this.wheelSprites[1].rotation = this.wheelBodies[1].rotation;
@@ -492,7 +492,7 @@ MotoRacer.Game.prototype = {
 		game.physics.arcade.overlap(this.motoSprite, this.coins, this.collectCoin, null, this);
 
 		// CHECKING IF THE MOTO SPRITE FALL INTO THE ABYSS
-		if (this.motoSprite.position.y>200)
+		if (this.motoSprite.position.y>70)
 			{
 			// SETTING THAT THE GAME OVER TOAST MUST BE DISPLAYED
 			this.gameOver = true;
