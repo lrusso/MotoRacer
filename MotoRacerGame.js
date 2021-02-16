@@ -498,6 +498,16 @@ MotoRacer.Game.prototype = {
 			this.backgroundEndless.tilePosition.x = this.backgroundEndless.tilePosition.x - 0.5;
 			}
 
+		// CHECKING IF THE MOTO SPRITE FALL INTO THE ABYSS
+		if (this.motoSprite.position.y>200)
+			{
+			// SETTING THAT THE GAME OVER TOAST MUST BE DISPLAYED
+			this.gameOver = true;
+
+			// RESTARTING THE GAME
+			this.restartGame();
+			}
+
 		// CHECKING IF THERE IS A TIMESTAMP FOR THE ABOUT TOAST
 		if (this.toastTimeStamp!=null)
 			{
