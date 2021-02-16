@@ -200,7 +200,7 @@ MotoRacer.Game.prototype = {
 		// DRAWING THE GROUND
 		this.groundVerticesGraphic = game.add.graphics(0, 0);
 		this.groundVerticesGraphic.beginFill(0xfba101);
-		this.groundVerticesGraphic.lineStyle(1, 0x343434, 0.4);
+		this.groundVerticesGraphic.lineStyle(1, 0x343434, 0.2);
 		for(var i = 0; i < this.groundVertices.length; i=i+2)
 			{
 			if (i==0)
