@@ -413,7 +413,6 @@ MotoRacer.Game.prototype = {
 
 	update: function()
 		{
-
 		// THE WHEEL SPRITE 1 MUST FOLLOW THE WHEEL 1
 		this.wheelSprites[0].position.x = this.wheelBodies[0].x - 13;
 		this.wheelSprites[0].position.y = this.wheelBodies[0].y - 13;
