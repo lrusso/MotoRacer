@@ -109,6 +109,8 @@ MotoRacer.Game = function(game)
 	this.driveJoints = [];
 	this.wheelBodies = [];
 	this.wheelSprites = [];
+	this.wheelSpritesGraphics = [];
+	this.wheelSpritesGraphicsContainer = [];
 	this.motoSprite = null;
 	this.backgroundEndless = null;
 	this.buttonsContainer = null;
@@ -158,6 +160,8 @@ MotoRacer.Game.prototype = {
 		this.driveJoints = [];
 		this.wheelBodies = [];
 		this.wheelSprites = [];
+		this.wheelSpritesGraphics = [];
+		this.wheelSpritesGraphicsContainer = [];
 		this.motoSprite = null;
 		this.backgroundEndless = null;
 		this.buttonsContainer = null;
@@ -252,26 +256,26 @@ MotoRacer.Game.prototype = {
 		this.wheelSprites[1] = game.add.sprite(0, 0, "wheel");
 
 		// ADDING THE GRAPHIC 1 CONTAINER
-		this.wheelSpritesGraphic1Container = game.add.sprite(0, 0, "");
+		this.wheelSpritesGraphicsContainer[0] = game.add.sprite(0, 0, "");
 
 		// ADDING THE GRAPHIC 1 TO CONNECT THE MOTO WITH THE WHEEL 1
-		this.wheelSpritesGraphic1 = game.add.graphics(0,0);
-		this.wheelSpritesGraphic1.lineStyle(2, 0x000000, 1);
-		this.wheelSpritesGraphic1.moveTo(0,0);
-		this.wheelSpritesGraphic1.lineTo(15,-15);
-		this.wheelSpritesGraphic1.endFill();
-		this.wheelSpritesGraphic1Container.addChild(this.wheelSpritesGraphic1);
+		this.wheelSpritesGraphics[0] = game.add.graphics(0,0);
+		this.wheelSpritesGraphics[0].lineStyle(2, 0x000000, 1);
+		this.wheelSpritesGraphics[0].moveTo(0,0);
+		this.wheelSpritesGraphics[0].lineTo(15,-15);
+		this.wheelSpritesGraphics[0].endFill();
+		this.wheelSpritesGraphicsContainer[0].addChild(this.wheelSpritesGraphics[0]);
 
 		// ADDING THE GRAPHIC 2 CONTAINER
-		this.wheelSpritesGraphic2Container = game.add.sprite(0, 0, "");
+		this.wheelSpritesGraphicsContainer[1] = game.add.sprite(0, 0, "");
 
 		// ADDING THE GRAPHIC 2 TO CONNECT THE MOTO WITH THE WHEEL 2
-		this.wheelSpritesGraphic2 = game.add.graphics(0,0);
-		this.wheelSpritesGraphic2.lineStyle(2, 0x000000, 1);
-		this.wheelSpritesGraphic2.moveTo(0,0);
-		this.wheelSpritesGraphic2.lineTo(-15,-15);
-		this.wheelSpritesGraphic2.endFill();
-		this.wheelSpritesGraphic2Container.addChild(this.wheelSpritesGraphic2);
+		this.wheelSpritesGraphics[1] = game.add.graphics(0,0);
+		this.wheelSpritesGraphics[1].lineStyle(2, 0x000000, 1);
+		this.wheelSpritesGraphics[1].moveTo(0,0);
+		this.wheelSpritesGraphics[1].lineTo(-15,-15);
+		this.wheelSpritesGraphics[1].endFill();
+		this.wheelSpritesGraphicsContainer[1].addChild(this.wheelSpritesGraphics[1]);
 
 		// ADDING THE MOTO SPRITE
 		this.motoSprite = game.add.sprite(300, 0, "moto");
@@ -443,14 +447,14 @@ MotoRacer.Game.prototype = {
 		this.motoSprite.y += this.motoSprite.height / 2
 
 		// THE LINE BETWEEN THE WHEEL 1 AND THE MOTO SPRITE MUST BE ALWAYS POINTING TO THE MOTO SPRITE
-		this.wheelSpritesGraphic1Container.position.x = this.wheelBodies[0].x;
-		this.wheelSpritesGraphic1Container.position.y = this.wheelBodies[0].y;
-		this.wheelSpritesGraphic1Container.rotation = this.motoBody.rotation;
+		this.wheelSpritesGraphicsContainer[0].position.x = this.wheelBodies[0].x;
+		this.wheelSpritesGraphicsContainer[0].position.y = this.wheelBodies[0].y;
+		this.wheelSpritesGraphicsContainer[0].rotation = this.motoBody.rotation;
 
 		// THE LINE BETWEEN THE WHEEL 2 AND THE MOTO SPRITE MUST BE ALWAYS POINTING TO THE MOTO SPRITE
-		this.wheelSpritesGraphic2Container.position.x = this.wheelBodies[1].x;
-		this.wheelSpritesGraphic2Container.position.y = this.wheelBodies[1].y;
-		this.wheelSpritesGraphic2Container.rotation = this.motoBody.rotation;
+		this.wheelSpritesGraphicsContainer[1].position.x = this.wheelBodies[1].x;
+		this.wheelSpritesGraphicsContainer[1].position.y = this.wheelBodies[1].y;
+		this.wheelSpritesGraphicsContainer[1].rotation = this.motoBody.rotation;
 
 		var motorSpeed = 50; // RAD/S
 		var motorEnabled = true;
