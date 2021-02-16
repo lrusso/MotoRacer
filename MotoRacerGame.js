@@ -109,9 +109,6 @@ MotoRacer.Game = function(game)
 	this.driveJoints = [];
 	this.wheelBodies = [];
 	this.wheelSprites = [];
-	this.wheelSpritesLines = [];
-	this.wheelSpritesGraphic1 = null;
-	this.wheelSpritesGraphic2 = null;
 	this.motoSprite = null;
 	this.backgroundEndless = null;
 	this.buttonsContainer = null;
@@ -161,9 +158,6 @@ MotoRacer.Game.prototype = {
 		this.driveJoints = [];
 		this.wheelBodies = [];
 		this.wheelSprites = [];
-		this.wheelSpritesLines = [];
-		this.wheelSpritesGraphic1 = null;
-		this.wheelSpritesGraphic2 = null;
 		this.motoSprite = null;
 		this.backgroundEndless = null;
 		this.buttonsContainer = null;
@@ -268,17 +262,27 @@ MotoRacer.Game.prototype = {
 		// MAKING THE CAMERA TO FOLLOW THE MOTO BODY
 		game.camera.follow(this.motoBody);
 
-		// ADDING THE LINE 1 TO CONNECT THE MOTO WITH THE WHEEL 1
-		this.wheelSpritesLines[0] = new Phaser.Line(this.wheelSprites[0].x, this.wheelSprites[0].y, this.motoSprite.x, this.motoSprite.y);
-
-		// ADDING THE LINE 2 TO CONNECT THE MOTO WITH THE WHEEL 2
-		this.wheelSpritesLines[1] = new Phaser.Line(this.wheelSprites[1].x, this.wheelSprites[1].y, this.motoSprite.x, this.motoSprite.y);
+		// ADDING THE GRAPHIC 1 CONTAINER
+		this.wheelSpritesGraphic1Container = game.add.sprite(0, 0, "");
 
 		// ADDING THE GRAPHIC 1 TO CONNECT THE MOTO WITH THE WHEEL 1
 		this.wheelSpritesGraphic1 = game.add.graphics(0,0);
+		this.wheelSpritesGraphic1.lineStyle(2, 0x000000, 1);
+		this.wheelSpritesGraphic1.moveTo(0,0);
+		this.wheelSpritesGraphic1.lineTo(15,-15);
+		this.wheelSpritesGraphic1.endFill();
+		this.wheelSpritesGraphic1Container.addChild(this.wheelSpritesGraphic1);
+
+		// ADDING THE GRAPHIC 2 CONTAINER
+		this.wheelSpritesGraphic2Container = game.add.sprite(0, 0, "");
 
 		// ADDING THE GRAPHIC 2 TO CONNECT THE MOTO WITH THE WHEEL 2
 		this.wheelSpritesGraphic2 = game.add.graphics(0,0);
+		this.wheelSpritesGraphic2.lineStyle(2, 0x000000, 1);
+		this.wheelSpritesGraphic2.moveTo(0,0);
+		this.wheelSpritesGraphic2.lineTo(-15,-15);
+		this.wheelSpritesGraphic2.endFill();
+		this.wheelSpritesGraphic2Container.addChild(this.wheelSpritesGraphic2);
 
 		// SETTING THE CALLBACK WHEN THE MOTO SPRITE HITS THE GROUND
 		this.motoBody.setFixtureContactCallback(this.groundBody, function (a,b,c,d,e)
@@ -407,6 +411,9 @@ MotoRacer.Game.prototype = {
 			// SETTING THAT THE ABOUT TOAST MUST NOT BE DISPLAYED AGAIN
 			this.toast = false;
 			}
+
+		// BRINGING THE MOTOR SPRITE TO THE TOP
+		this.motoSprite.bringToTop();
 		},
 
 	update: function()
@@ -438,29 +445,15 @@ MotoRacer.Game.prototype = {
 		this.motoSprite.x += this.motoSprite.width / 2;
 		this.motoSprite.y += this.motoSprite.height / 2
 
-		// DRAWING AN INVISIBLE LINE BETWEEN THE WHEEL 1 AND THE MOTO SPRITE
-		this.wheelSpritesLines[0].fromSprite(this.wheelSprites[0], this.motoSprite, false);
+		// THE LINE BETWEEN THE WHEEL 1 AND THE MOTO SPRITE MUST BE ALWAYS POINTING TO THE MOTO SPRITE
+		this.wheelSpritesGraphic1Container.position.x = this.wheelBodies[0].x;
+		this.wheelSpritesGraphic1Container.position.y = this.wheelBodies[0].y;
+		this.wheelSpritesGraphic1Container.rotation = this.motoBody.rotation;
 
-		// DRAWING A LINE BETWEEN THE WHEEL 1 AND THE MOTO SPRITE
-		this.wheelSpritesGraphic1.clear();
-		this.wheelSpritesGraphic1.lineStyle(2, 0x000000, 1);
-		this.wheelSpritesGraphic1.moveTo(this.wheelSpritesLines[0].start.x,this.wheelSpritesLines[0].start.y);
-		this.wheelSpritesGraphic1.lineTo(this.wheelSpritesLines[0].end.x,this.wheelSpritesLines[0].end.y);
-		this.wheelSpritesGraphic1.endFill();
-
-		// DRAWING AN INVISIBLE LINE BETWEEN THE WHEEL 1 AND THE MOTO SPRITE
-		this.wheelSpritesLines[1].fromSprite(this.wheelSprites[1], this.motoSprite, false);
-
-		// DRAWING A LINE BETWEEN THE WHEEL 2 AND THE MOTO SPRITE
-		this.wheelSpritesGraphic2.clear();
-		this.wheelSpritesGraphic2 = game.add.graphics(0,0);
-		this.wheelSpritesGraphic2.lineStyle(2, 0x000000, 1);
-		this.wheelSpritesGraphic2.moveTo(this.wheelSpritesLines[1].start.x,this.wheelSpritesLines[1].start.y);
-		this.wheelSpritesGraphic2.lineTo(this.wheelSpritesLines[1].end.x,this.wheelSpritesLines[1].end.y);
-		this.wheelSpritesGraphic2.endFill();
-
-		// BRINGING THE MOTOR SPRITE TO THE TOP
-		this.motoSprite.bringToTop();
+		// THE LINE BETWEEN THE WHEEL 2 AND THE MOTO SPRITE MUST BE ALWAYS POINTING TO THE MOTO SPRITE
+		this.wheelSpritesGraphic2Container.position.x = this.wheelBodies[1].x;
+		this.wheelSpritesGraphic2Container.position.y = this.wheelBodies[1].y;
+		this.wheelSpritesGraphic2Container.rotation = this.motoBody.rotation;
 
 		var motorSpeed = 50; // RAD/S
 		var motorEnabled = true;
