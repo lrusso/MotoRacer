@@ -119,7 +119,6 @@ MotoRacer.Game = function(game)
 	this.wheelSpritesGraphicsContainer = [];
 	this.motoSprite = null;
 	this.backgroundEndless = null;
-	this.buttonsContainer = null;
 
 	this.scoreBackground = null;
 	this.scoreValue = null;
@@ -131,6 +130,15 @@ MotoRacer.Game = function(game)
 	this.highScoreIconShadow = null;
 	this.highScoreLabel = null;
 	this.highScoreLabelShadow = null;
+
+	this.pad = null;
+	this.keyA = null;
+	this.keyS = null;
+	this.keyD = null;
+	this.buttonA = null;
+	this.buttonB = null;
+	this.buttonC = null;
+	this.buttonsContainer = null;
 
 	this.isMobileDevice = null;
 
@@ -172,7 +180,6 @@ MotoRacer.Game.prototype = {
 		this.wheelSpritesGraphicsContainer = [];
 		this.motoSprite = null;
 		this.backgroundEndless = null;
-		this.buttonsContainer = null;
 
 		this.scoreBackground = null;
 		this.scoreValue = 0;
@@ -184,6 +191,15 @@ MotoRacer.Game.prototype = {
 		this.highScoreIconShadow = null;
 		this.highScoreLabel = null;
 		this.highScoreLabelShadow = null;
+
+		this.pad = null;
+		this.keyA = null;
+		this.keyS = null;
+		this.keyD = null;
+		this.buttonA = null;
+		this.buttonB = null;
+		this.buttonC = null;
+		this.buttonsContainer = null;
 
 		this.isMobileDevice = null;
 		},
@@ -366,21 +382,26 @@ MotoRacer.Game.prototype = {
 		this.highScoreBackground.fixedToCamera = true;
 
 		// ADDING THE HIGH SCORE ICON SHADOW
-		this.highScoreIconShadow = game.add.sprite(17, 19, "imageHighScore");
+		this.highScoreIconShadow = game.add.sprite(17, 19.5, "imageHighScore");
 		this.highScoreIconShadow.tint = 0x000000;
 		this.highScoreIconShadow.fixedToCamera = true;
 
 		// ADDING THE HIGH SCORE ICON
-		this.highScoreIcon = game.add.sprite(15, 17, "imageHighScore");
+		this.highScoreIcon = game.add.sprite(15, 17.5, "imageHighScore");
 		this.highScoreIcon.fixedToCamera = true;
 
 		// ADDING THE SCORE LABEL SHADOW
-		this.highScoreLabelShadow = game.add.text(46, 14.5, this.getHighscore(), { font: "bold 30px Arial", fill: "#000", boundsAlignH: "center", boundsAlignV: "middle" });
+		this.highScoreLabelShadow = game.add.text(46, 15, this.getHighscore(), { font: "bold 30px Arial", fill: "#000", boundsAlignH: "center", boundsAlignV: "middle" });
 		this.highScoreLabelShadow.fixedToCamera = true;
 
 		// ADDING THE SCORE LABEL
-		this.highScoreLabel = game.add.text(44, 12.5, this.getHighscore(), { font: "bold 30px Arial", fill: "#FFF", boundsAlignH: "center", boundsAlignV: "middle" });
+		this.highScoreLabel = game.add.text(44, 13, this.getHighscore(), { font: "bold 30px Arial", fill: "#FFF", boundsAlignH: "center", boundsAlignV: "middle" });
 		this.highScoreLabel.fixedToCamera = true;
+
+		// REGISTERING THE 'A','S' AND 'D' KEYS
+		this.keyA = game.input.keyboard.addKey(Phaser.Keyboard.A);
+		this.keyS = game.input.keyboard.addKey(Phaser.Keyboard.S);
+		this.keyD = game.input.keyboard.addKey(Phaser.Keyboard.D);
 
 		// CHECKING IF IT IS A MOBILE DEVICE
 		if (this.isMobileDevice==true)
@@ -393,20 +414,28 @@ MotoRacer.Game.prototype = {
 			this.pad = this.game.plugins.add(Phaser.VirtualJoystick);
 
 			// ADDING THE BUTTON A
-			this.buttonA = this.pad.addButton(-350, 0, "dpad", "button1-up", "button1-down");
+			this.buttonA = this.pad.addButton(-350, -100, "dpad", "button1-up", "button1-down");
 			this.buttonA.sprite.scale.set(0.8);
 			this.buttonA.sprite.inputEnabled = true;
-			this.buttonA.sprite.events.onInputDown.add(function(){this.cursors.left.isDown=true;},this);
-			this.buttonA.sprite.events.onInputUp.add(function(){this.cursors.left.isDown=false;},this);
-			this.buttonsContainer.addChild(this.buttonA.sprite)
+			this.buttonA.sprite.events.onInputDown.add(function(){this.cursors.down.isDown=true;},this);
+			this.buttonA.sprite.events.onInputUp.add(function(){this.cursors.down.isDown=false;},this);
+			this.buttonsContainer.addChild(this.buttonA.sprite);
 
 			// ADDING THE BUTTON B
-			this.buttonB = this.pad.addButton(350, 0, "dpad", "button2-up", "button2-down");
+			this.buttonB = this.pad.addButton(-350, 0, "dpad", "button2-up", "button2-down");
 			this.buttonB.sprite.scale.set(0.8);
 			this.buttonB.sprite.inputEnabled = true;
-			this.buttonB.sprite.events.onInputDown.add(function(){this.cursors.right.isDown=true;},this);
-			this.buttonB.sprite.events.onInputUp.add(function(){this.cursors.right.isDown=false;},this);
-			this.buttonsContainer.addChild(this.buttonB.sprite)
+			this.buttonB.sprite.events.onInputDown.add(function(){this.cursors.left.isDown=true;},this);
+			this.buttonB.sprite.events.onInputUp.add(function(){this.cursors.left.isDown=false;},this);
+			this.buttonsContainer.addChild(this.buttonB.sprite);
+
+			// ADDING THE BUTTON C
+			this.buttonC = this.pad.addButton(350, 0, "dpad", "button3-up", "button3-down");
+			this.buttonC.sprite.scale.set(0.8);
+			this.buttonC.sprite.inputEnabled = true;
+			this.buttonC.sprite.events.onInputDown.add(function(){this.cursors.right.isDown=true;},this);
+			this.buttonC.sprite.events.onInputUp.add(function(){this.cursors.right.isDown=false;},this);
+			this.buttonsContainer.addChild(this.buttonC.sprite);
 			}
 
 		// CHECKING IF THE GAME OVER TOAST MUST BE DISPLAYED
@@ -437,7 +466,6 @@ MotoRacer.Game.prototype = {
 
 		// BRINGING THE MOTO SPRITE TO THE TOP
 		this.motoSprite.bringToTop();
-
 		},
 
 	update: function()
@@ -493,14 +521,26 @@ MotoRacer.Game.prototype = {
 			}
 			else
 			{
-			// CHECKING IF THE LEFT KEY IS PRESSED
-			if (this.cursors.left.isDown && !this.cursors.right.isDown)
+			// CHECKING IF THE DOWN KEY IS PRESSED
+			if (this.cursors.down.isDown || this.keyS.isDown)
 				{
 				// SETTING NO SPEED FOR THE MOTORS
 				motorSpeed = 0;
+
+				// DECREASING THE MOTOR STRENGTH
+				this.motorTorque = 1;
+				}
+			// CHECKING IF THE LEFT KEY IS PRESSED
+			else if ((this.cursors.left.isDown && !this.cursors.right.isDown) || (this.keyA.isDown && !this.keyD.isDown))
+				{
+				// SETTING BACKWARD SPEED
+				motorSpeed = motorSpeed * -1;
+
+				// DECREASING THE MOTOR STRENGTH
+				this.motorTorque = 1;
 				}
 			// CHECKING IF THE RIGHT KEY IS PRESSED
-			else if (this.cursors.right.isDown && !this.cursors.left.isDown)
+			else if ((this.cursors.right.isDown && !this.cursors.left.isDown) || (this.keyD.isDown && !this.keyA.isDown))
 				{
 				// INCREASING THE MOTOR STRENGTH
 				this.motorTorque = 2;
