@@ -118,7 +118,7 @@ MotoRacer.Preloader.prototype = {
 	create: function()
 		{
 		// STARTING THE GAME
-		this.state.start("MotoRacer.Splash");
+		this.state.start("MotoRacer.Game");
 		}
 	};
 
@@ -254,7 +254,6 @@ MotoRacer.Game = function(game)
 	this.buttonForwardNormal = null;
 	this.buttonForwardPressed = null;
 	this.buttonForwardIcon = null;
-	this.buttonsContainer = null;
 
 	this.isMobileDevice = null;
 
@@ -337,7 +336,6 @@ MotoRacer.Game.prototype = {
 		this.buttonForwardNormal = null;
 		this.buttonForwardPressed = null;
 		this.buttonForwardIcon = null;
-		this.buttonsContainer = null;
 
 		this.isMobileDevice = null;
 		},
@@ -643,87 +641,83 @@ MotoRacer.Game.prototype = {
 		// CHECKING IF IT IS A MOBILE DEVICE
 		if (this.isMobileDevice==true)
 			{
-			// ADDING THE BUTTONS CONTAINER
-			this.buttonsContainer = game.add.sprite(400, 380, "");
-			this.buttonsContainer.fixedToCamera = true;
+			// ADDING THE BREAK NORMAL BUTTON
+			this.buttonBreakNormal = game.add.sprite(-11, 223, "imageButtonNormal");
+			this.buttonBreakNormal.scale.set(0.8);
+			this.buttonBreakNormal.fixedToCamera = true;
+
+			// ADDING THE BREAK PRESSED BUTTON
+			this.buttonBreakPressed = game.add.sprite(-11, 223, "imageButtonPressed");
+			this.buttonBreakPressed.scale.set(0.8);
+			this.buttonBreakPressed.fixedToCamera = true;
+			this.buttonBreakPressed.visible = false;
+
+			// ADDING THE BREAK ICON
+			this.buttonBreakIcon = game.add.sprite(22, 257, "imageBrake");
+			this.buttonBreakIcon.alpha = 0.55;
+			this.buttonBreakIcon.scale.set(0.8);
+			this.buttonBreakIcon.fixedToCamera = true;
 
 			// ADDING THE BREAK HANDLER
-			this.buttonBreakHandler = game.add.sprite(-410, -160, "");
-			this.buttonBreakHandler.width = 120;
-			this.buttonBreakHandler.height = 120;
+			this.buttonBreakHandler = game.add.graphics();
+			this.buttonBreakHandler.beginFill(0x000000, 0);
+			this.buttonBreakHandler.drawRect(0, 232, 100, 100, 10);
+			this.buttonBreakHandler.fixedToCamera = true;
 			this.buttonBreakHandler.inputEnabled = true;
 			this.buttonBreakHandler.events.onInputDown.add(function(){this.cursors.down.isDown=true;this.buttonBreakNormal.visible=false;this.buttonBreakPressed.visible=true;},this);
 			this.buttonBreakHandler.events.onInputUp.add(function(){this.cursors.down.isDown=false;this.buttonBreakNormal.visible=true;this.buttonBreakPressed.visible=false;},this);
-			this.buttonsContainer.addChild(this.buttonBreakHandler);
 
-			// ADDING THE BREAK NORMAL BUTTON
-			this.buttonBreakNormal = game.add.sprite(-410, -160, "imageButtonNormal");
-			this.buttonBreakNormal.scale.set(0.8);
-			this.buttonsContainer.addChild(this.buttonBreakNormal);
+			// ADDING THE BACKWARDS NORMAL BUTTON
+			this.buttonBackwardsNormal = game.add.sprite(-11, 324, "imageButtonNormal");
+			this.buttonBackwardsNormal.scale.set(0.8);
+			this.buttonBackwardsNormal.fixedToCamera = true;
 
-			// ADDING THE BREAK PRESSED BUTTON
-			this.buttonBreakPressed = game.add.sprite(-410, -160, "imageButtonPressed");
-			this.buttonBreakPressed.scale.set(0.8);
-			this.buttonBreakPressed.visible = false;
-			this.buttonsContainer.addChild(this.buttonBreakPressed);
+			// ADDING THE BACKWARDS PRESSED BUTTON
+			this.buttonBackwardsPressed = game.add.sprite(-11, 324, "imageButtonPressed");
+			this.buttonBackwardsPressed.scale.set(0.8);
+			this.buttonBackwardsPressed.fixedToCamera = true;
+			this.buttonBackwardsPressed.visible = false;
 
-			// ADDING THE BREAK ICON
-			this.buttonBreakIcon = game.add.sprite(-377, -126, "imageBrake");
-			this.buttonBreakIcon.alpha = 0.55;
-			this.buttonBreakIcon.scale.set(0.8);
-			this.buttonsContainer.addChild(this.buttonBreakIcon);
+			// ADDING THE BACKWARDS ICON
+			this.buttonBackwardsIcon = game.add.sprite(23, 358, "imageLeft");
+			this.buttonBackwardsIcon.alpha = 0.4;
+			this.buttonBackwardsIcon.scale.set(0.8);
+			this.buttonBackwardsIcon.fixedToCamera = true;
 
 			// ADDING THE BACKWARDS HANDLER
-			this.buttonBackwardsHandler = game.add.sprite(-410, -60, "");
-			this.buttonBackwardsHandler.width = 120;
-			this.buttonBackwardsHandler.height = 120;
+			this.buttonBackwardsHandler = game.add.graphics();
+			this.buttonBackwardsHandler.beginFill(0x000000, 0);
+			this.buttonBackwardsHandler.drawRect(0, 332, 100, 100, 10);
+			this.buttonBackwardsHandler.fixedToCamera = true;
 			this.buttonBackwardsHandler.inputEnabled = true;
 			this.buttonBackwardsHandler.events.onInputDown.add(function(){this.cursors.left.isDown=true;this.buttonBackwardsNormal.visible=false;this.buttonBackwardsPressed.visible=true;},this);
 			this.buttonBackwardsHandler.events.onInputUp.add(function(){this.cursors.left.isDown=false;this.buttonBackwardsNormal.visible=true;this.buttonBackwardsPressed.visible=false;},this);
-			this.buttonsContainer.addChild(this.buttonBackwardsHandler);
 
-			// ADDING THE BACKWARDS NORMAL BUTTON
-			this.buttonBackwardsNormal = game.add.sprite(-410, -60, "imageButtonNormal");
-			this.buttonBackwardsNormal.scale.set(0.8);
-			this.buttonsContainer.addChild(this.buttonBackwardsNormal);
+			// ADDING THE FORWARD NORMAL BUTTON
+			this.buttonForwardNormal = game.add.sprite(691, 324, "imageButtonNormal");
+			this.buttonForwardNormal.scale.set(0.8);
+			this.buttonForwardNormal.fixedToCamera = true;
 
-			// ADDING THE BACKWARDS PRESSED BUTTON
-			this.buttonBackwardsPressed = game.add.sprite(-410, -60, "imageButtonPressed");
-			this.buttonBackwardsPressed.scale.set(0.8);
-			this.buttonBackwardsPressed.visible = false;
-			this.buttonsContainer.addChild(this.buttonBackwardsPressed);
+			// ADDING THE FORWARD PRESSED BUTTON
+			this.buttonForwardPressed = game.add.sprite(691, 324, "imageButtonPressed");
+			this.buttonForwardPressed.scale.set(0.8);
+			this.buttonForwardPressed.fixedToCamera = true;
+			this.buttonForwardPressed.visible = false;
 
-			// ADDING THE BACKWARDS ICON
-			this.buttonBackwardsIcon = game.add.sprite(-376, -26, "imageLeft");
-			this.buttonBackwardsIcon.alpha = 0.4;
-			this.buttonBackwardsIcon.scale.set(0.8);
-			this.buttonsContainer.addChild(this.buttonBackwardsIcon);
+			// ADDING THE FORDWARD ICON
+			this.buttonForwardIcon = game.add.sprite(726, 358, "imageRight");
+			this.buttonForwardIcon.alpha = 0.4;
+			this.buttonForwardIcon.scale.set(0.8);
+			this.buttonForwardIcon.fixedToCamera = true;
 
 			// ADDING THE FORWARD HANDLER
-			this.buttonForwardHandler = game.add.sprite(290, -60, "");
-			this.buttonForwardHandler.width = 120;
-			this.buttonForwardHandler.height = 120;
+			this.buttonForwardHandler = game.add.graphics();
+			this.buttonForwardHandler.beginFill(0x000000, 0);
+			this.buttonForwardHandler.drawRect(700, 332, 100, 100, 10);
+			this.buttonForwardHandler.fixedToCamera = true;
 			this.buttonForwardHandler.inputEnabled = true;
 			this.buttonForwardHandler.events.onInputDown.add(function(){this.cursors.right.isDown=true;this.buttonForwardNormal.visible=false;this.buttonForwardPressed.visible=true;},this);
 			this.buttonForwardHandler.events.onInputUp.add(function(){this.cursors.right.isDown=false;this.buttonForwardNormal.visible=true;this.buttonForwardPressed.visible=false;},this);
-			this.buttonsContainer.addChild(this.buttonForwardHandler);
-
-			// ADDING THE FORWARD NORMAL BUTTON
-			this.buttonForwardNormal = game.add.sprite(290, -60, "imageButtonNormal");
-			this.buttonForwardNormal.scale.set(0.8);
-			this.buttonsContainer.addChild(this.buttonForwardNormal);
-
-			// ADDING THE FORWARD PRESSED BUTTON
-			this.buttonForwardPressed = game.add.sprite(290, -60, "imageButtonPressed");
-			this.buttonForwardPressed.scale.set(0.8);
-			this.buttonForwardPressed.visible = false;
-			this.buttonsContainer.addChild(this.buttonForwardPressed);
-
-			// ADDING THE FORDWARD ICON
-			this.buttonForwardIcon = game.add.sprite(325, -26, "imageRight");
-			this.buttonForwardIcon.alpha = 0.4;
-			this.buttonForwardIcon.scale.set(0.8);
-			this.buttonsContainer.addChild(this.buttonForwardIcon);
 			}
 
 		// CHECKING IF THE GAME OVER TOAST MUST BE DISPLAYED
