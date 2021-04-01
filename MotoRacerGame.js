@@ -118,7 +118,7 @@ MotoRacer.Preloader.prototype = {
 	create: function()
 		{
 		// STARTING THE GAME
-		this.state.start("MotoRacer.Game");
+		this.state.start("MotoRacer.Splash");
 		}
 	};
 
