@@ -121,7 +121,7 @@ MotoRacer.Preloader.prototype = {
 	create: function()
 		{
 		// STARTING THE GAME
-		this.state.start("MotoRacer.Splash");
+		this.state.start("MotoRacer.Game");
 		}
 	};
 
@@ -600,11 +600,14 @@ MotoRacer.Game.prototype = {
 		this.scoreBackground.fixedToCamera = true;
 
 		// ADDING THE SCORE LABEL SHADOW
-		this.scoreLabelShadow = game.add.text(18, 64.5, this.scoreValue, { font: "bold 30px Arial", fill: "#000", boundsAlignH: "center", boundsAlignV: "middle" });
+		this.scoreLabelShadow = game.add.bitmapText(18, 69.5, "ArialBlackShadow", "0", 25);
+		this.scoreLabelShadow.height = 30;
+		this.scoreLabelShadow.tint = 0x000000;
 		this.scoreLabelShadow.fixedToCamera = true;
 
 		// ADDING THE SCORE LABEL
-		this.scoreLabel = game.add.text(16, 62.5, this.scoreValue, { font: "bold 30px Arial", fill: "#FFF", boundsAlignH: "center", boundsAlignV: "middle" });
+		this.scoreLabel = game.add.bitmapText(16, 67.5, "ArialBlackShadow", "0", 25);
+		this.scoreLabel.height = 30;
 		this.scoreLabel.fixedToCamera = true;
 
 		// ADDING THE HIGH SCORE BACKGROUND
@@ -624,11 +627,14 @@ MotoRacer.Game.prototype = {
 		this.highScoreIcon.fixedToCamera = true;
 
 		// ADDING THE SCORE LABEL SHADOW
-		this.highScoreLabelShadow = game.add.text(46, 15, this.getHighscore(), { font: "bold 30px Arial", fill: "#000", boundsAlignH: "center", boundsAlignV: "middle" });
+		this.highScoreLabelShadow = game.add.bitmapText(47, 19, "ArialBlackShadow", this.getHighscore(), 25);
+		this.highScoreLabelShadow.height = 30;
+		this.highScoreLabelShadow.tint = 0x000000;
 		this.highScoreLabelShadow.fixedToCamera = true;
 
 		// ADDING THE SCORE LABEL
-		this.highScoreLabel = game.add.text(44, 13, this.getHighscore(), { font: "bold 30px Arial", fill: "#FFF", boundsAlignH: "center", boundsAlignV: "middle" });
+		this.highScoreLabel = game.add.bitmapText(45, 17, "ArialBlackShadow", this.getHighscore(), 25);
+		this.highScoreLabel.height = 30;
 		this.highScoreLabel.fixedToCamera = true;
 
 		// REGISTERING THE 'A','S' AND 'D' KEYS
@@ -1127,7 +1133,7 @@ MotoRacer.Game.prototype = {
 			{
 			}
 
-		return 0;
+		return "0";
 		},
 
 	setHighscore: function(newHighscore)
