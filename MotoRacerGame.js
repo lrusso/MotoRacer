@@ -1174,6 +1174,7 @@ MotoRacer.Game.prototype = {
 
 		// CREATING THE TOAST TEXT
 		this.toastText = game.add.bitmapText(0, 0, "ArialBlackShadow", myText, 20.5);
+		this.toastText.height = 24;
 		this.toastText.position.x = game.width / 2 - this.toastText.width / 2;
 		this.toastText.position.y = game.height - this.toastText.height - 19;
 		this.toastText.fixedToCamera = true;
