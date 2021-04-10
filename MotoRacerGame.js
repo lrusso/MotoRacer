@@ -1187,21 +1187,27 @@ MotoRacer.Game.prototype = {
 		}
 	};
 
-// CHECKING EVERY 250 MS IF THE DOCUMENT HAS FOCUS
+// CHECKING EVERY 200 MS IF THE DOCUMENT HAS FOCUS
 setInterval(function()
 	{
-	// CHECKING IF THE DOCUMENT HAS FOCUS
-	if(document.hasFocus()==true)
+	try
 		{
-		// RESUMING THE GAME
-		game.paused = false;
+		// CHECKING IF THE DOCUMENT HAS FOCUS
+		if(document.hasFocus()==true)
+			{
+			// RESUMING THE GAME
+			game.paused = false;
+			}
+			else
+			{
+			// PAUSING THE GAME
+			game.paused = true;
+			}
 		}
-		else
+		catch(err)
 		{
-		// PAUSING THE GAME
-		game.paused = true;
 		}
-}, 250);
+	}, 200);
 
 // SETTING THE DEFAULT RENDERER MODE
 var rendererMode = Phaser.WEBGL;
