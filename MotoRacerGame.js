@@ -629,13 +629,13 @@ MotoRacer.Game.prototype = {
 		this.highScoreIcon = game.add.sprite(15, 17.5, "imageHighScore");
 		this.highScoreIcon.fixedToCamera = true;
 
-		// ADDING THE SCORE LABEL SHADOW
+		// ADDING THE HIGH SCORE LABEL SHADOW
 		this.highScoreLabelShadow = game.add.bitmapText(47, 19, "ArialBlackWhite", this.getHighscore(), 25);
 		this.highScoreLabelShadow.height = 30;
 		this.highScoreLabelShadow.tint = 0x000000;
 		this.highScoreLabelShadow.fixedToCamera = true;
 
-		// ADDING THE SCORE LABEL
+		// ADDING THE HIGH SCORE LABEL
 		this.highScoreLabel = game.add.bitmapText(45, 17, "ArialBlackWhite", this.getHighscore(), 25);
 		this.highScoreLabel.height = 30;
 		this.highScoreLabel.fixedToCamera = true;
