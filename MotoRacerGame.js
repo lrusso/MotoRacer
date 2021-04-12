@@ -671,7 +671,7 @@ MotoRacer.Game.prototype = {
 			this.buttonBreakHandler.drawRect(0, 232, 100, 100, 10);
 			this.buttonBreakHandler.fixedToCamera = true;
 			this.buttonBreakHandler.inputEnabled = true;
-			this.buttonBreakHandler.events.onInputDown.add(function(){this.cursors.down.isDown=true;this.buttonBreakNormal.visible=false;this.buttonBreakPressed.visible=true;},this);
+			this.buttonBreakHandler.events.onInputDown.add(function(){this.cursors.down.isDown=true;this.buttonBreakNormal.visible=false;this.buttonBreakPressed.visible=true;this.update();},this);
 			this.buttonBreakHandler.events.onInputUp.add(function(){this.cursors.down.isDown=false;this.buttonBreakNormal.visible=true;this.buttonBreakPressed.visible=false;},this);
 
 			// ADDING THE BACKWARDS NORMAL BUTTON
@@ -697,7 +697,7 @@ MotoRacer.Game.prototype = {
 			this.buttonBackwardsHandler.drawRect(0, 332, 100, 100, 10);
 			this.buttonBackwardsHandler.fixedToCamera = true;
 			this.buttonBackwardsHandler.inputEnabled = true;
-			this.buttonBackwardsHandler.events.onInputDown.add(function(){this.cursors.left.isDown=true;this.buttonBackwardsNormal.visible=false;this.buttonBackwardsPressed.visible=true;},this);
+			this.buttonBackwardsHandler.events.onInputDown.add(function(){this.cursors.left.isDown=true;this.buttonBackwardsNormal.visible=false;this.buttonBackwardsPressed.visible=true;this.update();},this);
 			this.buttonBackwardsHandler.events.onInputUp.add(function(){this.cursors.left.isDown=false;this.buttonBackwardsNormal.visible=true;this.buttonBackwardsPressed.visible=false;},this);
 
 			// ADDING THE FORWARD NORMAL BUTTON
@@ -723,7 +723,7 @@ MotoRacer.Game.prototype = {
 			this.buttonForwardHandler.drawRect(700, 332, 100, 100, 10);
 			this.buttonForwardHandler.fixedToCamera = true;
 			this.buttonForwardHandler.inputEnabled = true;
-			this.buttonForwardHandler.events.onInputDown.add(function(){this.cursors.right.isDown=true;this.buttonForwardNormal.visible=false;this.buttonForwardPressed.visible=true;},this);
+			this.buttonForwardHandler.events.onInputDown.add(function(){this.cursors.right.isDown=true;this.buttonForwardNormal.visible=false;this.buttonForwardPressed.visible=true;this.update();},this);
 			this.buttonForwardHandler.events.onInputUp.add(function(){this.cursors.right.isDown=false;this.buttonForwardNormal.visible=true;this.buttonForwardPressed.visible=false;},this);
 			}
 
