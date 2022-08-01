@@ -33,6 +33,8 @@ if (userLanguage.substring(0,2)=="es")
 
 var GAME_SOUND_ENABLED = false;
 
+var MUSIC_PLAYER = null;
+
 var MotoRacer = {showDebug: false};
 
 MotoRacer.Preloader = function(){};
@@ -264,11 +266,13 @@ MotoRacer.Game = function(game)
 
 	this.isMobileDevice = null;
 
-	this.musicPlayer = null;
 	this.audioEnginePlayer = null;
-	this.audioBreakingPlayer = null;
 	this.audioSpeedingPlayer = null;
 	this.audioOthersPlayer = null;
+
+	this.clickTimestamp = null;
+	this.clickPositionX = null;
+	this.clickPositionY = null;
 
 	// SCALING THE CANVAS SIZE FOR THE GAME
 	function resizeF()
@@ -345,6 +349,10 @@ MotoRacer.Game.prototype = {
 		this.buttonForwardIcon = null;
 
 		this.isMobileDevice = null;
+
+		this.clickTimestamp = null;
+		this.clickPositionX = null;
+		this.clickPositionY = null;
 		},
 
 	create: function()
@@ -430,8 +438,14 @@ MotoRacer.Game.prototype = {
 		if (GAME_SOUND_ENABLED==false){this.buttonSoundOnGame.visible = false;}
 		this.buttonSoundOnGame.fixedToCamera = true;
 		this.buttonSoundOnGame.inputEnabled = true;
+		this.buttonSoundOnGame.events.onInputDown.add(function(){if(this.clickTimestamp==null){this.clickTimestamp=this.getCurrentTime();this.clickPositionX=this.game.input.activePointer.position.x;this.clickPositionY=this.game.input.activePointer.position.y;}},this);
 		this.buttonSoundOnGame.events.onInputUp.add(function()
 			{
+			// REJECTING ANY SLIDE AND LONG PRESS EVENT - BUGFIX FOR SAFARI ON IOS FOR ENABLING THE AUDIO CONTEXT
+			if (Math.abs(this.game.input.activePointer.position.x-this.clickPositionX)>=25){this.clickTimestamp=null;return;}
+			if (Math.abs(this.game.input.activePointer.position.y-this.clickPositionY)>=25){this.clickTimestamp=null;return;}
+			if (this.getCurrentTime()-this.clickTimestamp>=500){this.clickTimestamp=null;return;}
+
 			// SETTING THAT THE SOUND IS DISABLED
 			GAME_SOUND_ENABLED = false;
 
@@ -443,20 +457,48 @@ MotoRacer.Game.prototype = {
 			this.buttonSoundOnGame.visible = false;
 			this.buttonSoundOnGameShadow.visible = false;
 
-			// CHECKING IF THE MUSIC PLAYER IS CREATED
-			if (this.musicPlayer!=null)
+			// CHECKING IF THE BACKGROUND MUSIC PLAYER IS CREATED
+			if (MUSIC_PLAYER!=null)
 				{
-				// PAUSING THE BACKGROUND MUSIC
-				this.musicPlayer.pause();
+				// PAUSING THE BACKGROUND MUSIC PLAYER
+				MUSIC_PLAYER.pause();
+
+				// DESTROYING THE BACKGROUND MUSIC PLAYER
+				MUSIC_PLAYER.destroy();
 				}
 
 			// CHECKING IF THE AUDIO ENGINE PLAYER IS CREATED
 			if (this.audioEnginePlayer!=null)
 				{
+				// PAUSING THE AUDIO ENGINE PLAYER
+				this.audioEnginePlayer.pause();
+
 				// DESTROYING THE AUDIO ENGINE PLAYER
 				this.audioEnginePlayer.destroy();
-				this.audioEnginePlayer = null;
 				}
+
+			// CHECKING IF THE AUDIO SPEEDING PLAYER IS CREATED
+			if (this.audioSpeedingPlayer!=null)
+				{
+				// PAUSING THE AUDIO SPEEDING PLAYER
+				this.audioSpeedingPlayer.pause();
+
+				// DESTROYING THE AUDIO SPEEDING PLAYER
+				this.audioSpeedingPlayer.destroy();
+				}
+
+			// CHECKING IF THE AUDIO OTHERS PLAYER IS CREATED
+			if (this.audioOthersPlayer!=null)
+				{
+				// PAUSING THE AUDIO OTHERS PLAYER
+				this.audioOthersPlayer.pause();
+
+				// DESTROYING THE AUDIO OTHERS PLAYER
+				this.audioOthersPlayer.destroy();
+				}
+
+			// CLEARING THE CLICK TIMESTAMP VALUE
+			this.clickTimestamp = null;
 			},this);
 
 		// ADDING THE SOUND OFF GAME ICON
@@ -470,8 +512,14 @@ MotoRacer.Game.prototype = {
 		if (GAME_SOUND_ENABLED==true){this.buttonSoundOffGame.visible=false;}
 		this.buttonSoundOffGame.fixedToCamera = true;
 		this.buttonSoundOffGame.inputEnabled = true;
+		this.buttonSoundOffGame.events.onInputDown.add(function(){if(this.clickTimestamp==null){this.clickTimestamp=this.getCurrentTime();this.clickPositionX=this.game.input.activePointer.position.x;this.clickPositionY=this.game.input.activePointer.position.y;}},this);
 		this.buttonSoundOffGame.events.onInputUp.add(function()
 			{
+			// REJECTING ANY SLIDE AND LONG PRESS EVENT - BUGFIX FOR SAFARI ON IOS FOR ENABLING THE AUDIO CONTEXT
+			if (Math.abs(this.game.input.activePointer.position.x-this.clickPositionX)>=25){this.clickTimestamp=null;return;}
+			if (Math.abs(this.game.input.activePointer.position.y-this.clickPositionY)>=25){this.clickTimestamp=null;return;}
+			if (this.getCurrentTime()-this.clickTimestamp>=500){this.clickTimestamp=null;return;}
+
 			// SETTING THAT THE SOUND IS ENABLED
 			GAME_SOUND_ENABLED = true;
 
@@ -483,37 +531,52 @@ MotoRacer.Game.prototype = {
 			this.buttonSoundOffGame.visible = false;
 			this.buttonSoundOffGameShadow.visible = false;
 
-			// CHECKING IF THE MUSIC PLAYER IS NOT CREATED
-			if (this.musicPlayer==null)
+			// CHECKING IF THE BACKGROUND MUSIC PLAYER IS CREATED
+			if (MUSIC_PLAYER!=null)
 				{
-				// SETTING THE AUDIO FILE THAT WILL BE PLAYED AS BACKGROUND MUSIC
-				this.musicPlayer = this.add.audio("musicBackground");
+				// PAUSING THE BACKGROUND MUSIC PLAYER
+				MUSIC_PLAYER.pause();
 
-				// SETTING THE BACKGROUND MUSIC VOLUME
-				this.musicPlayer.volume = 0.3;
-
-				// SETTING THAT THE BACKGROUND MUSIC WILL BE LOOPING
-				this.musicPlayer.loop = true;
+				// DESTROYING THE BACKGROUND MUSIC PLAYER
+				MUSIC_PLAYER.destroy();
 				}
+
+			// SETTING THE AUDIO FILE THAT WILL BE PLAYED AS BACKGROUND MUSIC
+			MUSIC_PLAYER = this.add.audio("musicBackground");
+
+			// SETTING THE BACKGROUND MUSIC VOLUME
+			MUSIC_PLAYER.volume = 0.3;
+
+			// SETTING THAT THE BACKGROUND MUSIC WILL BE LOOPING
+			MUSIC_PLAYER.loop = true;
 
 			// PLAYING THE BACKGROUND MUSIC
-			this.musicPlayer.play();
+			MUSIC_PLAYER.play();
 
-			// CHECKING IF THE AUDIO ENGINE PLAYER IS NOT CREATED
-			if (this.audioEnginePlayer==null)
+			// CHECKING IF THE AUDIO ENGINE PLAYER IS CREATED
+			if (this.audioEnginePlayer!=null)
 				{
-				// SETTING THE AUDIO FILE THAT WILL BE PLAYED AS THE AUDIO ENGINE SOUND
-				this.audioEnginePlayer = this.add.audio("soundEngine");
+				// PAUSING THE AUDIO ENGINE PLAYER
+				this.audioEnginePlayer.pause();
 
-				// SETTING THE AUDIO ENGINE SOUND VOLUME
-				this.audioEnginePlayer.volume = 0.3;
-
-				// SETTING THAT THE AUDIO ENGINE SOUND WILL BE LOOPING
-				this.audioEnginePlayer.loop = true;
+				// DESTROYING THE AUDIO ENGINE PLAYER
+				this.audioEnginePlayer.destroy();
 				}
+
+			// SETTING THE AUDIO FILE THAT WILL BE PLAYED AS THE AUDIO ENGINE SOUND
+			this.audioEnginePlayer = this.add.audio("soundEngine");
+
+			// SETTING THE AUDIO ENGINE SOUND VOLUME
+			this.audioEnginePlayer.volume = 0.3;
+
+			// SETTING THAT THE AUDIO ENGINE SOUND WILL BE LOOPING
+			this.audioEnginePlayer.loop = true;
 
 			// PLAYING THE AUDIO ENGINE SOUND
 			this.audioEnginePlayer.play();
+
+			// CLEARING THE CLICK TIMESTAMP VALUE
+			this.clickTimestamp = null;
 			},this);
 
 		// ADDING THE WHEEL SPRITE 1
@@ -820,6 +883,9 @@ MotoRacer.Game.prototype = {
 						// CHECKING IF THE AUDIO SPEEDING SOUND PLAYER IS CREATED
 						if (this.audioSpeedingPlayer!=null)
 							{
+							// PAUSING THE AUDIO SPEEDING SOUND PLAYER
+							this.audioSpeedingPlayer.pause();
+
 							// DESTROYING THE AUDIO SPEEDING SOUND PLAYER
 							this.audioSpeedingPlayer.destroy();
 							}
@@ -827,6 +893,9 @@ MotoRacer.Game.prototype = {
 						// CHECKING IF THE AUDIO OTHERS PLAYER IS CREATED
 						if (this.audioOthersPlayer!=null)
 							{
+							// PAUSING THE AUDIO SPEEDING SOUND PLAYER
+							this.audioOthersPlayer.pause();
+
 							// DESTROYING THE AUDIO OTHERS PLAYER
 							this.audioOthersPlayer.destroy();
 							}
@@ -1042,27 +1111,30 @@ MotoRacer.Game.prototype = {
 		if (GAME_SOUND_ENABLED==true)
 			{
 			// CHECKING IF THE BACKGROUND MUSIC PLAYER IS CREATED
-			if(this.musicPlayer!=null)
+			if(MUSIC_PLAYER!=null)
 				{
 				// DESTROYING THE BACKGROUND MUSIC PLAYER
-				this.musicPlayer.destroy();
+				MUSIC_PLAYER.destroy();
 				}
 
 			// SETTING THE AUDIO FILE THAT WILL BE PLAYED AS BACKGROUND MUSIC
-			this.musicPlayer = this.add.audio("musicBackground");
+			MUSIC_PLAYER = this.add.audio("musicBackground");
 
 			// SETTING THE BACKGROUND MUSIC VOLUME
-			this.musicPlayer.volume = 0.3;
+			MUSIC_PLAYER.volume = 0.3;
 
 			// SETTING THAT THE BACKGROUND MUSIC WILL BE LOOPING
-			this.musicPlayer.loop = true;
+			MUSIC_PLAYER.loop = true;
 
 			// PLAYING THE BACKGROUND MUSIC
-			this.musicPlayer.play();
+			MUSIC_PLAYER.play();
 
 			// CHECKING IF THE ACCELERATION SOUND PLAYER IS CREATED
 			if(this.audioSpeedingPlayer!=null)
 				{
+				// PAUSING THE ACCELERATION SOUND PLAYER
+				this.audioSpeedingPlayer.pause();
+
 				// DESTROYING THE ACCELERATION SOUND PLAYER
 				this.audioSpeedingPlayer.destroy();
 				}
@@ -1070,6 +1142,9 @@ MotoRacer.Game.prototype = {
 			// CHECKING IF THE AUDIO OTHERS PLAYER IS CREATED
 			if (this.audioOthersPlayer!=null)
 				{
+				// PAUSING THE AUDIO OTHERS PLAYER
+				this.audioOthersPlayer.pause();
+
 				// DESTROYING THE AUDIO OTHERS PLAYER
 				this.audioOthersPlayer.destroy();
 				}
